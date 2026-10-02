@@ -9,7 +9,7 @@
     <!-- Configures the mobile viewport to scale correctly across different device screen sizes -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Defines the title displayed on the browser tab -->
-    <title>SceneScout | Home</title>
+    <title>PopcornID | Home</title>
     <!-- Links the external stylesheet styles.css to apply visual formatting -->
     <link rel="stylesheet" href="styles.css">
 <!-- Closes the head section -->
@@ -45,14 +45,14 @@
             <!-- Branding wrapper for centering the SceneScout logo and tagline -->
             <div class="brand-logo">
                 <!-- SceneScout main brand logo image -->
-                <img src="logo.png" alt="SceneScout Logo" class="auth-logo-img">
+                <img src="logo.png" alt="PopcornID Logo" class="auth-logo-img">
                 <!-- Descriptive tagline under the main logo -->
                 <p class="tagline">Snap or Upload Any Movie Frame To Identify It Instantly!</p>
             <!-- Closes the brand-logo container -->
             </div>
 
             <!-- Dynamic heading element displaying the active authentication mode title -->
-            <h2 id="authTitle">Sign In to SceneScout</h2>
+            <h2 id="authTitle">Sign In to PopcornID</h2>
             
             <!-- Credentials input form container wrapper -->
             <div id="credentialsForm">
@@ -82,7 +82,7 @@
                 <!-- Instructional notice text explaining the password reset step -->
                 <p id="forgotNotice" class="auth-notice-text">Enter Your Registered Email to Receive a Password Reset Link:</p>
                 <!-- Email text input field for submitting password reset requests -->
-                <input type="email" id="forgotEmailInput" placeholder="Enter your email address">
+                <input type="email" id="forgotEmailInput" placeholder="Enter Your Email Address">
                 <!-- Primary button triggering submitForgotPassword JS function -->
                 <button class="btn-primary" onclick="submitForgotPassword()">Send Reset Link</button>
                 <!-- Secondary button returning the user to the standard sign in view -->
@@ -93,11 +93,11 @@
             <!-- Multi-factor authentication section container initially hidden -->
             <div id="mfaSection" class="auth-section-hidden">
                 <!-- Instructions for entering the 6-digit MFA security code -->
-                <p id="mfaNotice">Enter the 6-digit Code Sent To Your Email Address:</p>
+                <p id="mfaNotice">Enter The Code Sent To Your Email Address:</p>
                 <!-- Centered text input field constrained to a 6-character verification code -->
                 <input type="text" id="mfaCodeInput" class="mfa-code-input" placeholder="123456" maxlength="6">
                 <!-- Primary button triggering verifyMfaCode JS function -->
-                <button class="btn-primary" onclick="verifyMfaCode()">Verify Code</button>
+                <button class="btn-primary" onclick="verifyMfaCode()">Verify Code!</button>
             <!-- Closes the mfaSection container -->
             </div>
             
@@ -119,13 +119,13 @@
                 <!-- Left Group: Logo with Mascot Speech Bubble side-by-side -->
                 <div class="nav-left-group index-nav-left">
                     <a href="index.html" class="tv-nav-logo-link index-logo-link">
-                        <!-- SceneScout brand logo image -->
+                        <!-- PopcornID brand logo image -->
                         <img src="logo.png" alt="SceneScout Logo" class="tv-nav-logo index-nav-logo-img">
                     </a>
                     
                     <!-- Mascot Speech Bubble Container -->
                     <div class="mascot-speech-bubble">
-                        <h3 class="mascot-title">🎞️ Movie Fact of the Day</h3>
+                        <h3 class="mascot-title">🍿 Movie Fact of the Day</h3>
                         <p id="factOfDayText" class="fact-text-content">Loading Fact of the Day...</p>
                     </div>
                 </div>
@@ -133,7 +133,7 @@
                 <!-- Center Group: Header text centered in the middle -->
                 <div class="combined-fact-center-content index-center-content">
                     <!-- Animated greeting message text element centered in the navigation bar -->
-                    <div class="nav-fun-text animated-welcome">Find Movie Titles Instantly!</div>
+                    <div class="nav-fun-text animated-welcome">Welcome to PopcornID - ID Movie Titles Instantly!</div>
                 </div>
 
                 <!-- Right Group: Hamburger Menu -->
@@ -152,12 +152,12 @@
                                 <div id="hamburgerAvatarPreview" class="nav-avatar">🎬</div>
                                 <span id="hamburgerUsername" class="nav-username-text">Beaudoin</span>
                             </div>
-                            <a href="index.html">Home 🏠</a>
-                            <a href="tvshows.html">TV Shows 📺</a>
-                            <a href="profile.html">My Profile 🪪</a>
-                            <a href="account.html">Account Settings 🔑</a>
+                            <a href="index.html">Home</a>
+                            <a href="tvshows.html">TV Shows</a>
+                            <a href="profile.html">My Profile</a>
+                            <a href="account.html">Account Settings</a>
                             <!-- Mobile & Desktop Dropdown Log Out link with event prevention -->
-                            <a href="#" class="mobile-logout-link" onclick="handleLogout(); return false;">Log Out 🚪</a>
+                            <a href="#" class="mobile-logout-link" onclick="handleLogout(); return false;">Log Out</a>
                         </div>
                     </div>
                 </div>
@@ -171,12 +171,12 @@
             <!-- Left column container for recently released movies and upcoming feed grids -->
             <div class="column-left-feed">
                 <!-- Section heading for recently released movies -->
-                <h2>🎬 Recently Released Movies</h2>
+                <h2>🍿 Recently Released Movies!</h2>
                 <!-- Dynamic feed container where recent movie cards are rendered via JS -->
                 <div id="recentFeed" class="news-grid feed-bottom-spacing">Loading Recent Movies...</div>
 
                 <!-- Section heading for upcoming theatrical releases -->
-                <h2>🍿 Coming Soon to Theaters</h2>
+                <h2>🍿 Coming Soon To Theaters!</h2>
                 <!-- Dynamic feed container where upcoming movie cards are rendered via JS -->
                 <div id="upcomingFeed" class="news-grid">Loading Upcoming Movies...</div>
             <!-- Closes the left column feed container -->
@@ -186,27 +186,27 @@
             <div class="sidebar-middle">
                 <!-- Branding logo wrapper for center column -->
                 <div class="column-brand-logo">
-                    <!-- SceneScout sidebar brand logo image -->
-                    <img src="logo.png" alt="SceneScout Logo" class="column-logo-img">
+                    <!-- PopcornID sidebar brand logo image -->
+                    <img src="logo.png" alt="PopcornID Logo" class="column-logo-img">
                 <!-- Closes column-brand-logo container -->
                 </div>
                 <!-- Dynamic quote or tagline text paragraph -->
                 <p id="sidebarFunText" class="sidebar-fun-text"></p>
 
                 <!-- Tool title heading -->
-                <h2>🎬 SceneScout Movie Search</h2>
+                <h2>🍿 PopcornID Movie Search</h2>
                 <!-- Upload input section container -->
                 <div id="uploadSection">
                     <!-- Drag-and-drop label trigger acting as upload zone wrapper -->
                     <label id="dropLabel" class="drop-zone">
                         <!-- Text displaying drag-and-drop instructions or selected file name -->
-                        <span id="fileNameDisplay">🍿 Upload or Drag Mystery Screenshot Here!</span>
+                        <span id="fileNameDisplay">🍿 Upload Mystery Screenshot Here!</span>
                         <!-- Hidden file input accepting image formats and running updateFileName -->
                         <input type="file" id="imageInput" accept="image/*" onchange="updateFileName()" hidden>
                     <!-- Closes drop-zone label element -->
                     </label>
                     <!-- Action button triggering uploadImage JS function to identify screenshot -->
-                    <button class="btn-primary" onclick="uploadImage()">Identify Movie</button>
+                    <button class="btn-primary" onclick="uploadImage()">Identify Movie!</button>
                 <!-- Closes uploadSection container -->
                 </div>
                 <!-- Container for displaying processing status messages -->
@@ -219,12 +219,12 @@
             <!-- Right column container for movie news and discussion feeds -->
             <div class="column-right">
                 <!-- Section heading for movie news -->
-                <h2>📰 Movie News</h2>
+                <h2>🍿 Movie News</h2>
                 <!-- Dynamic feed container where movie news cards are rendered via JS -->
                 <div id="newsFeed" class="news-grid feed-bottom-spacing">Loading Movie News...</div>
 
                 <!-- Section heading for movie discussions -->
-                <h2>💬 Movie Discussions</h2>
+                <h2>🍿 Movie Discussions</h2>
                 <!-- Dynamic feed container where discussion cards are rendered via JS -->
                 <div id="discussionFeed" class="news-grid">Loading Discussions...</div>
             <!-- Closes column-right container -->

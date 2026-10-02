@@ -9,7 +9,7 @@
     <!-- Configures the viewport for responsive scaling on mobile devices -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Sets the title text displayed in the browser tab header -->
-    <title>SceneScout | TV Shows</title>
+    <title>PopcornID | TV Shows</title>
     <!-- Links the external CSS stylesheet file for application styling -->
     <link rel="stylesheet" href="styles.css">
 <!-- Closes the document head section -->
@@ -71,12 +71,12 @@
                                 <div id="hamburgerAvatarPreview" class="nav-avatar">🎬</div>
                                 <span id="hamburgerUsername" class="nav-username-text">Beaudoin</span>
                             </div>
-                            <a href="index.html">Home 🏠</a>
-                            <a href="tvshows.html">TV Shows 📺</a>
-                            <a href="profile.html">My Profile 🪪</a>
-                            <a href="account.html">Account Settings 🔑</a>
+                            <a href="index.html">Home</a>
+                            <a href="tvshows.html">TV Shows</a>
+                            <a href="profile.html">My Profile</a>
+                            <a href="account.html">Account Settings</a>
                             <!-- Mobile-only Log Out link inside the dropdown with event prevention -->
-                            <a href="#" class="mobile-logout-link" onclick="handleLogout(); return false;">Log Out 🚪</a>
+                            <a href="#" class="mobile-logout-link" onclick="handleLogout(); return false;">Log Out</a>
                         </div>
                     </div>
                 </div>
@@ -91,7 +91,7 @@
             
             <!-- Top Horizontal Section: Search TV Shows Controls Card -->
             <div class="profile-section-card tvshows-card-margin">
-                <h3 class="tvshows-section-title">🔍 Search TV Shows</h3>
+                <h3 class="tvshows-section-title">Search TV Shows</h3>
                 <div class="tvshows-search-row">
                     <input type="text" id="tvSearchInput" placeholder="Search Here!" class="no-margin tvshows-input-flex">
                     <button onclick="performTvSearch()" class="btn-primary btn-auto-width tvshows-zero-margin">Search Show</button>
@@ -100,7 +100,7 @@
 
             <!-- Bottom Section: Popular TV Shows Grid Feed Container -->
             <div class="profile-section-card tvshows-card-margin">
-                <h2 class="tvshows-heading">📺 Popular TV Shows</h2>
+                <h2 class="tvshows-heading">Popular TV Shows</h2>
                 <div id="tvShowsFeed" class="news-grid custom-scroll-feed tvshows-grid-container">
                     Loading Popular TV Shows...
                 </div>
@@ -116,7 +116,7 @@
         <!-- Reduced max-width to 450px and max-height to 70vh for a smaller modular window -->
         <div class="modal-content tvshows-modal-box">
             <div class="modal-header-bar tvshows-modal-header">
-                <h3 class="tvshows-modal-title">🔎 Search Results</h3>
+                <h3 class="tvshows-modal-title">Search Results</h3>
                 <button onclick="closeTvSearchModal()" class="card-delete-btn" title="Close">✕</button>
             </div>
             <!-- Scrollable body container for search matches -->
@@ -133,7 +133,7 @@
         <!-- Reduced max-width to 450px and max-height to 70vh -->
         <div class="modal-content tvshows-modal-box">
             <div class="modal-header-bar tvshows-shrink-flex">
-                <button onclick="closeTvModal()" class="card-delete-btn" title="Close">✕</button>
+                <button onclick="closeTvModal()" class="card-delete-btn" title="Close">X</button>
             </div>
             
             <div id="tvModalBody" class="custom-scroll-feed tvshows-modal-body-scroll">
