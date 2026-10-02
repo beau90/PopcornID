@@ -121,7 +121,7 @@
                 <!-- Section B: Friends & Following -->
                 <div class="profile-friends-column">
                     <!-- Section title heading with group emoji -->
-                    <h3 class="profile-card-title-reset">👥 Friends List</h3>
+                    <h3 class="profile-card-title-reset">My Friends List</h3>
                     <!-- Subtitle text prompting user connections -->
                     <p class="section-subtitle">Follow Fellow Film Finders Here!</p>
                     <!-- Flexbox row grouping friend input field and add button -->
@@ -143,7 +143,7 @@
                 <!-- Section C: Favorite Genres -->
                 <div class="profile-genre-column">
                     <!-- Section title heading displaying drama mask emoji -->
-                    <h3 class="profile-card-title-reset">🎭 Favorite Genres</h3>
+                    <h3 class="profile-card-title-reset">My Favorite Genres</h3>
                     <p class="section-subtitle">Pick Your Top Film Themes!</p>
                     <!-- Flexbox row grouping genre selector and add button -->
                     <div class="input-group-row">
@@ -184,7 +184,7 @@
                 <!-- LEFT COLUMN: Favorite Movies & TV Shows -->
                 <div class="profile-section-card profile-card-reset">
                     <!-- Section title heading displaying star emoji -->
-                    <h3>⭐ Favorite Movies & TV Shows</h3>
+                    <h3>My Favorite Movies/TV Shows</h3>
                     <!-- Vertical stack wrapper holding title input, media selector, file uploader, and save button -->
                     <div class="stacked-input-group">
                         <!-- Horizontal row grouping title input box and media type select box -->
@@ -204,7 +204,7 @@
                         <!-- Row layout providing custom button click trigger for file upload without browser text artifact -->
                         <div class="file-upload-row profile-file-row-cursor" onclick="document.getElementById('favPosterFileInput').click();">
                             <!-- Span text displaying upload prompt or selected image filename cleanly -->
-                            <span class="file-upload-label" id="favPosterFileName">Click Here To Upload Custom Poster/Scene!</span>
+                            <span class="file-upload-label" id="favPosterFileName">Click Here To Upload Custom Poster!</span>
                             <!-- Hidden input element accepting image file uploads without showing browser labels -->
                             <input type="file" id="favPosterFileInput" accept="image/*" class="profile-hidden-input" onchange="document.getElementById('favPosterFileName').textContent = this.files[0] ? this.files[0].name : 'Upload Custom Poster/Scene 📁';">
                         <!-- Closes file upload row -->
@@ -215,7 +215,7 @@
                     </div>
 
                     <!-- Subheader indicating favorite movies subsection -->
-                    <h4 class="sub-section-header">🎬 Favorite Movies</h4>
+                    <h4 class="sub-section-header">My Favorite Movies</h4>
                     <!-- Grid container where favorite movie cards are dynamically rendered -->
                     <div id="favoriteMoviesGrid" class="news-grid custom-grid-spacing">
                         <!-- Placeholder notice text displayed when no favorite movies exist -->
@@ -224,7 +224,7 @@
                     </div>
 
                     <!-- Subheader indicating favorite TV shows subsection -->
-                    <h4 class="sub-section-header">📺 Favorite TV Shows</h4>
+                    <h4 class="sub-section-header">My Favorite TV Shows</h4>
                     <!-- Grid container where favorite TV show cards are dynamically rendered -->
                     <div id="favoriteTvShowsGrid" class="news-grid">
                         <!-- Placeholder notice text displayed when no favorite TV shows exist -->
@@ -237,7 +237,7 @@
                 <!-- MIDDLE COLUMN: My Movie & TV Show Recommendations -->
                 <div class="profile-section-card profile-card-reset">
                     <!-- Section title heading displaying sparkle emojis -->
-                    <h3>✨ My Movie & TV Show Recommendations</h3>
+                    <h3>My Movie/TV Show Must Watch List</h3>
                     <!-- Stacked form group holding recommendation inputs -->
                     <div class="stacked-input-group">
                         <!-- Horizontal row grouping title input and media type select box -->
@@ -268,7 +268,7 @@
                     </div>
 
                     <!-- Subheader for recommended movies grid -->
-                    <h4 class="sub-section-header">🎬 Recommended Movies</h4>
+                    <h4 class="sub-section-header">My Recommended Movies</h4>
                     <!-- Grid container where recommended movie cards are appended dynamically -->
                     <div id="recommendedMoviesGrid" class="news-grid custom-grid-spacing">
                         <!-- Placeholder notice displayed when no movie recommendations exist -->
@@ -277,7 +277,7 @@
                     </div>
 
                     <!-- Subheader for recommended TV shows grid -->
-                    <h4 class="sub-section-header">📺 Recommended TV Shows</h4>
+                    <h4 class="sub-section-header">My Recommended TV Shows</h4>
                     <!-- Grid container where recommended TV show cards are appended dynamically -->
                     <div id="recommendedTvShowsGrid" class="news-grid">
                         <!-- Placeholder notice displayed when no TV show recommendations exist -->
@@ -290,7 +290,7 @@
                 <!-- RIGHT COLUMN: Rate a Movie or TV Show & Rated Logbook History -->
                 <div class="profile-section-card profile-card-reset">
                     <!-- Section title heading displaying memo emoji -->
-                    <h3>📝 Rate a Movie or TV Show</h3>
+                    <h3>📝 My Movie & TV Show Ratings!</h3>
                     <!-- Text input field for typing media title being rated -->
                     <input type="text" id="rateTitleInput" placeholder="Add Here!" class="input-spacer">
                     
@@ -318,7 +318,7 @@
                     <button class="btn-primary" onclick="submitPersonalRating()">Save Rating to Logbook</button>
 
                     <!-- Subheader separating rating form from logged review history log -->
-                    <h4 class="sub-section-header profile-subheader-space">📊 My Rated TV Shows & Movies</h4>
+                    <h4 class="sub-section-header profile-subheader-space">My Rated TV Shows & Movies</h4>
                     <!-- Scrollable container wrapper holding rating log entry cards -->
                     <div id="ratedLogContainer" class="rated-log-container">
                         <!-- Default placeholder notice displayed when no ratings exist in storage -->
