@@ -43,7 +43,7 @@ const loadingQuotes = [
     "Microwaving The Popcorn!",    // Loading quip referencing snack preparation before movie screening
     "Enhancing The Pixels!",        // Loading quip referencing digital video quality enhancement techniques
     "Calling Steven Spielberg!",    // Loading quip referencing a famous legendary Hollywood movie director
-    "Rewinding The VHS!",            // Loading quip referencing retro magnetic tape cassette rewind mechanics
+    "Rewinding The VHS!",           // Loading quip referencing retro magnetic tape cassette rewind mechanics
     "Calling Christopher Nolan!",   // Loading quip referencing a contemporary blockbuster director known for complex plots
     "Interrogating Extras!",        // Loading quip referencing questioning background background actors on set
     "Consulting George Lucas!",     // Loading quip referencing sci-fi franchise creator and technological pioneer
@@ -282,12 +282,13 @@ async function submitForgotPassword() {
 }
 
 /**
- * Handles user login and registration form submissions by transmitting payloads to the backend API.
+ * Handles user login and registration form submissions by transmitting payloads to the backend API with lowercase normalization.
  */
 async function handleAuthSubmit() {
     const usernameInput = document.getElementById("usernameInput"); // Locates username text input field element
     const passwordInput = document.getElementById("passwordInput"); // Locates password text input field element
-    const username = usernameInput ? usernameInput.value.trim() : ""; // Extracts and trims username input value string
+    // Automatically converts username to lowercase to match backend Supabase database expectations precisely
+    const username = usernameInput ? usernameInput.value.trim().toLowerCase() : ""; 
     const password = passwordInput ? passwordInput.value.trim() : ""; // Extracts and trims password input value string
     const emailInput = document.getElementById("emailInput"); // Locates optional registration email input element in DOM
     const email = emailInput ? emailInput.value.trim() : ""; // Extracts email string if input element exists on screen
@@ -357,7 +358,7 @@ async function verifyMfaCode() {
     }
 
     const usernameInput = document.getElementById("usernameInput"); // Locates login username input field element
-    const usernameInputVal = usernameInput ? usernameInput.value.trim() : ""; // Extracts username input value string
+    const usernameInputVal = usernameInput ? usernameInput.value.trim().toLowerCase() : ""; // Extracts normalized lowercase username input value string
     const targetUser = currentPendingUser || usernameInputVal; // Determines target username string from pending state or input field
 
     if (!targetUser) { // Checks if target username tracking string is lost or empty
