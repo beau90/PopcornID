@@ -15,9 +15,9 @@ import bcrypt                  # Imports hashing library to securely encrypt and
 import jwt                     # Imports JSON Web Token library to issue and verify secure session tokens
 import psycopg2                # Imports PostgreSQL database driver adapter for Python
 import psycopg2.extras         # Imports PostgreSQL dictionary cursor extensions for clean row parsing
+import resend                  # Imports official Resend library for sending outbound transactional emails
 from fastapi import FastAPI, File, UploadFile, HTTPException, Header # Imports core FastAPI web framework tools and request headers
 from fastapi.middleware.cors import CORSMiddleware # Imports CORS middleware to permit cross-origin browser requests
-from fastapi_mail import FastMail, MessageSchema, ConnectionConfig, MessageType # Imports mail framework for sending SMTP messages
 from PIL import Image          # Python Imaging Library (Pillow) to open, resize, and inspect uploaded images
 import google.generativeai as genai # Imports official Google Gemini AI library for computer vision analysis
 from dotenv import load_dotenv
@@ -138,17 +138,8 @@ users_db = load_users() # Executes loader function to populate user memory cache
 # ==========================================
 # 4. EMAIL & EXTERNAL AI/API CONFIGURATIONS
 # ==========================================
-mail_config = ConnectionConfig(
-    MAIL_USERNAME=os.getenv("MAIL_USERNAME"), # Loads SMTP login account username string from environment variables
-    MAIL_PASSWORD=os.getenv("MAIL_PASSWORD"), # Loads SMTP login app password string from environment variables
-    MAIL_FROM=os.getenv("MAIL_FROM"),         # Loads sender email address header string from environment variables
-    MAIL_PORT=587,                            # Sets standard TLS SMTP port number integer
-    MAIL_SERVER="smtp.gmail.com",             # Sets standard Gmail SMTP relay server hostname string
-    MAIL_STARTTLS=True,                       # Enables STARTTLS secure connection protocol flag
-    MAIL_SSL_TLS=False,                       # Disables direct SSL/TLS socket wrapping flag
-    USE_CREDENTIALS=True                      # Instructs mail client to authenticate using username and password
-) # Configures connection settings container for automated email delivery services
-fastmail = FastMail(mail_config) # Initializes the active FastMail dispatch client instance
+# Configures the official Resend API client using the environment variable key
+resend.api_key = os.getenv("RESEND_API_KEY")
 
 # SECURELY LOAD KEYS FROM .ENV FILE
 GEMINI_API_KEY = os.getenv("GCP_API_KEY") # Loads Gemini API key from environment variables
@@ -212,7 +203,7 @@ async def register(data: dict):
 
 @app.post("/api/login")
 async def login(data: dict):
-    """API endpoint to authenticate user credentials and send real MFA code via email."""
+    """API endpoint to authenticate user credentials and send real MFA code via Resend."""
     username = data.get("username", "").strip().lower() # Extracts and normalizes username string from request body
     password = data.get("password", "").strip()         # Extracts and trims password input string
 
@@ -224,17 +215,26 @@ async def login(data: dict):
     user["mfa_code"] = code    # Assigns the generated verification code to the user record
     save_user_to_db(username, user) # Commits updated MFA code state to Supabase database
 
-    # Constructs the email message payload schema to send to user's registered email address
-    message = MessageSchema(
-        subject="Your PopcornID Verification Code",
-        recipients=[user["email"]],
-        body=f"Your 6-digit Popcorn ID verification code is: {code}",
-        subtype=MessageType.plain
-    )
+    # Pulls sender email address from Vercel environment variables with a secure fallback
+    sender_email = os.getenv("MAIL_FROM", "no-reply@popcornid.com")
+
     try:
-        await fastmail.send_message(message) # Dispatches real email message asynchronously via SMTP server
+        # Dispatches outbound verification email securely via official Resend API
+        resend.Emails.send({
+            "from": sender_email,
+            "to": [user["email"]],
+            "subject": "Your PopcornID Verification Code",
+            "html": f"""
+                <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
+                    <h2 style="color: #e50914;">PopcornID Verification</h2>
+                    <p>Your 6-digit verification code is:</p>
+                    <h1 style="background: #f4f4f4; padding: 10px; display: inline-block; letter-spacing: 5px;">{code}</h1>
+                    <p>This code will expire shortly. If you did not request this, please ignore this email.</p>
+                </div>
+            """
+        })
     except Exception as e:
-        print(f"Email Dispatch Error: {e}") # Logs exception if email transmission fails
+        print(f"Resend Email Dispatch Error: {e}") # Logs exception if email transmission fails
 
     return {
         "success": True,
