@@ -2568,3 +2568,18 @@ input[type="date"] {
         padding: 0 25px !important; /* Matches 25px horizontal padding of top nav banner */
     }
 }
+
+/* ========================================== */
+/* 37. RESPONSIVE HEADER TEXT COLLAPSE        */
+/* ========================================== */
+@media (max-width: 1024px) {
+    /* Truncates the tagline subtitle on smaller screens to prevent hamburger menu overlap */
+    .combined-fact-center-content .nav-fun-text {
+        font-size: 0.9rem !important;
+        max-width: 220px;
+        margin: 0 auto;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap !important;
+    }
+}
