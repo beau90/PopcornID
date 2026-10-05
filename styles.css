@@ -35,6 +35,7 @@
   31. MODAL POPUP CENTERING & OVERFLOW FIXES
   32. PROFILE USERNAME CENTERING STYLES
   33. ACCOUNT SETTINGS VIEWPORT OVERFLOW FIX
+  34. REAL IOS SAFARI VIEWPORT CONTAINER & INPUT SIZING LOCKDOWN
 */
 
 /* ========================================== */
@@ -2527,4 +2528,43 @@ label[for="newUsernameInput"] {
     .full-width-field {
         grid-column: span 2; /* Spans selected fields across both columns */
     }
+}
+
+/* ========================================== */
+/* 34. REAL IOS SAFARI VIEWPORT CONTAINER &   */
+/*     INPUT SIZING LOCKDOWN                  */
+/* ========================================== */
+
+/* Global safety lock preventing document root from overflowing horizontally on iOS Safari */
+html, body {
+    max-width: 100vw !important; /* Restricts max width to exact viewport width */
+    overflow-x: hidden !important; /* Clips horizontal overflow */
+    -webkit-text-size-adjust: 100%; /* Prevents automatic font scaling in mobile Safari */
+}
+
+/* WebKit specific form element normalization to eliminate default iOS padding anomalies */
+input, select, textarea {
+    -webkit-appearance: none !important; /* Strips native iOS button/input glossy styling */
+    appearance: none !important; /* Normalizes appearance */
+    min-width: 0 !important; /* CRITICAL: Prevents flex and grid items from expanding past container bounds */
+}
+
+/* Strict sizing isolation for date inputs on real iPhone hardware */
+input[type="date"] {
+    -webkit-appearance: none !important; /* Removes iOS Safari native date capsule styling */
+    appearance: none !important;
+    width: 100% !important; /* Forces 100% width match */
+    max-width: 100% !important; /* Caps width */
+    min-width: 0 !important; /* Prevents overflow */
+    box-sizing: border-box !important; /* Includes padding and borders */
+}
+
+/* Explicit container bounds protection specifically for mobile Safari cards */
+.profile-page-container, 
+.profile-settings-card, 
+.auth-box {
+    width: 100% !important; /* Full width */
+    max-width: 100% !important; /* Max constraint */
+    box-sizing: border-box !important; /* Includes padding */
+    overflow-x: hidden !important; /* Clips internal overflow */
 }
