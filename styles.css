@@ -52,10 +52,10 @@
 body {
     background-color: #1a1f2c; /* Sets main dark navy background color */
     color: #f8fafc;            /* Sets base off-white typography color for high contrast */
-    min-height: 100vh;           /* Forces body height to span at least full window height */
-    display: flex;               /* Establishes flexbox layout context on top-level body */
+    min-height: 100vh;         /* Forces body height to span at least full window height */
+    display: flex;             /* Establishes flexbox layout context on top-level body */
     flex-direction: column;    /* Stacks header and main contents vertically */
-    font-size: 1.05rem;          /* Establishes global base text size ratio */
+    font-size: 1.05rem;         /* Establishes global base text size ratio */
 }
 
 /* ========================================== */
@@ -508,7 +508,6 @@ body {
 input[type="text"],
 input[type="password"],
 input[type="email"],
-input[type="date"],
 select,
 textarea,
 .current-email-box {
@@ -524,11 +523,21 @@ textarea,
     transition: border-color 0.2s; /* Smooth focus border transition */
 }
 
-/* Custom dark mode formatting for date pickers */
+/* Custom styling for date pickers to guarantee exact uniform width and matching form box dimensions */
 input[type="date"] {
-    background-color: #1e2533; /* Matches dark input background */
-    color: #f8fafc; /* Text color */
+    width: 100% !important; /* Forces uniform width matching other inputs */
+    max-width: 100% !important; /* Prevents mobile browser container overflow */
+    box-sizing: border-box !important; /* Ensures padding and border are included in width */
+    padding: 12px 15px !important; /* Matches vertical and horizontal padding of text inputs */
+    background-color: #1e2533 !important; /* Matches dark input background fill */
+    border: 1px solid #333c51 !important; /* Matches subtle input border line */
+    border-radius: 6px !important; /* Matches rounded input corners */
+    color: #f8fafc !important; /* Text color */
+    font-size: 1.05rem !important; /* Font size matching inputs */
+    outline: none !important; /* Disables outline ring */
+    margin-bottom: 16px !important; /* Consistent vertical bottom spacing */
     color-scheme: dark; /* Forces native calendar popup to use dark theme */
+    display: block !important; /* Block element behavior */
 }
 
 /* Focus state for active input fields */
@@ -1699,7 +1708,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 /* ========================================== */
-/* 23. HAMBURGER MENU & RESPONSIVE LOGOUT      */
+/* 23. HAMBURGER MENU & RESPONSIVE LOGOUT     */
 /* ========================================== */
 
 /* Hamburger menu container wrapper */
