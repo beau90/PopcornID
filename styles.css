@@ -34,6 +34,7 @@
   30. ACCOUNT.HTML SPECIFIC CLEANUP CLASSES
   31. MODAL POPUP CENTERING & OVERFLOW FIXES
   32. PROFILE USERNAME CENTERING STYLES
+  33. ACCOUNT SETTINGS VIEWPORT OVERFLOW FIX
 */
 
 /* ========================================== */
@@ -556,9 +557,9 @@ input:focus, select:focus, textarea:focus {
 /* Shortens the width of the New Username input box */
 #newUsernameInput {
     max-width: 250px; /* Adjust this pixel value to make it shorter or longer */
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
+    margin-left: auto; /* Centers box horizontally */
+    margin-right: auto; /* Centers box horizontally */
+    display: block; /* Block element display */
 }
 
 /* ========================================== */
@@ -2211,42 +2212,42 @@ input:focus, select:focus, textarea:focus {
 
 /* Fix for TV Show grid card poster sizing */
 .tvshows-grid-container .news-card img {
-    width: 100% !important;
-    height: 230px !important;
-    object-fit: cover !important;
-    border-radius: 6px !important;
-    margin-bottom: 8px !important;
+    width: 100% !important; /* Spans full card width */
+    height: 230px !important; /* Fixed poster height */
+    object-fit: cover !important; /* Crops image cleanly */
+    border-radius: 6px !important; /* Rounded corners */
+    margin-bottom: 8px !important; /* Space below image */
 }
 
 /* Fix to ensure TV show cards maintain uniform structure */
 .tvshows-grid-container .news-card {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    text-align: center !important;
+    display: flex !important; /* Flexbox layout */
+    flex-direction: column !important; /* Vertical stacking */
+    align-items: center !important; /* Centers horizontally */
+    justify-content: space-between !important; /* Spreads content */
+    text-align: center !important; /* Centered text */
 }
 
 /* Target ONLY the button container at the bottom of the TV show cards */
 .tvshows-grid-container .news-card > div:last-child {
-    display: flex !important;
-    flex-direction: row !important;
-    gap: 8px !important;
-    width: 100% !important;
-    justify-content: center !important;
-    margin-top: auto !important;
+    display: flex !important; /* Flex row layout */
+    flex-direction: row !important; /* Horizontal buttons */
+    gap: 8px !important; /* Gap between buttons */
+    width: 100% !important; /* Full width */
+    justify-content: center !important; /* Centers buttons */
+    margin-top: auto !important; /* Pushes to bottom */
 }
 
 /* Ensure the Fav and Rate buttons share the row evenly */
 .tvshows-grid-container .news-card > div:last-child button {
-    flex: 1 !important;
-    width: auto !important;
-    margin: 0 !important;
+    flex: 1 !important; /* Equal flex sizing */
+    width: auto !important; /* Auto width */
+    margin: 0 !important; /* Zero margin */
 }
 
 /* Add breathing room between the TV show poster/title and the buttons */
 .tvshows-grid-container .news-card > div:last-child {
-    margin-top: 12px !important;
+    margin-top: 12px !important; /* Top margin spacer */
 }
 
 /* ========================================== */
@@ -2340,19 +2341,19 @@ input:focus, select:focus, textarea:focus {
 
 /* Vertical stacking classes for usernames under presets */
 .username-stack-container {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-top: 20px;
-    width: 100%;
+    display: flex; /* Flexbox container */
+    flex-direction: column; /* Vertical stacking */
+    gap: 15px; /* Gap between fields */
+    margin-top: 20px; /* Top margin offset */
+    width: 100%; /* Spans full width */
 }
 
 .username-field-block {
-    width: 100%;
+    width: 100%; /* Spans full block width */
 }
 
 .username-field-block input {
-    width: 100%;
+    width: 100%; /* Spans full input width */
 }
 
 /* ========================================== */
@@ -2363,44 +2364,44 @@ input:focus, select:focus, textarea:focus {
 .modal-overlay,
 #successModal {
     display: none; /* Hidden by default until triggered */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.75);
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    padding: 20px;
+    position: fixed; /* Fixed viewport positioning */
+    top: 0; /* Flush to top */
+    left: 0; /* Flush to left */
+    width: 100vw; /* Full screen width */
+    height: 100vh; /* Full screen height */
+    background-color: rgba(0, 0, 0, 0.75); /* Dark semi-transparent overlay */
+    justify-content: center; /* Centers horizontally */
+    align-items: center; /* Centers vertically */
+    z-index: 1000; /* Floats above content */
+    padding: 20px; /* Outer padding */
 }
 
 /* Forces the modal content box to stack vertically, stay centered, and never overflow */
 .modal-content {
-    background-color: #252c3d;
-    padding: 30px 25px 25px 25px;
-    border-radius: 12px;
-    border: 1px solid #333c51;
-    text-align: center !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-    max-width: 460px;
-    width: 100%;
-    box-sizing: border-box;
-    word-break: break-word;
+    background-color: #252c3d; /* Dark slate fill */
+    padding: 30px 25px 25px 25px; /* Internal padding */
+    border-radius: 12px; /* Rounded corners */
+    border: 1px solid #333c51; /* Border line */
+    text-align: center !important; /* Centered text */
+    display: flex !important; /* Flexbox alignment */
+    flex-direction: column !important; /* Vertical stacking */
+    align-items: center !important; /* Centers horizontally */
+    justify-content: center !important; /* Centers vertically */
+    max-width: 460px; /* Max width */
+    width: 100%; /* Spans full width */
+    box-sizing: border-box; /* Includes padding */
+    word-break: break-word; /* Breaks long words */
 }
 
 /* Forces any text or message paragraph inside the modal to stay fully centered and constrained */
 .modal-content p, 
 .modal-content h3, 
 #successModalMessage {
-    width: 100% !important;
-    text-align: center !important;
-    margin-left: auto;
-    margin-right: auto;
-    box-sizing: border-box;
+    width: 100% !important; /* Spans full width */
+    text-align: center !important; /* Centered text */
+    margin-left: auto; /* Centers horizontally */
+    margin-right: auto; /* Centers horizontally */
+    box-sizing: border-box; /* Includes padding */
 }
 
 /* ========================================== */
@@ -2409,21 +2410,121 @@ input:focus, select:focus, textarea:focus {
 
 /* Forces "Current Username:" and "Beau" to stack vertically and center */
 .current-username-display {
-    text-align: center !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-    width: 100% !important;
-    margin-bottom: 15px !important;
+    text-align: center !important; /* Centered text */
+    display: flex !important; /* Flex layout */
+    flex-direction: column !important; /* Vertical stack */
+    align-items: center !important; /* Centers horizontally */
+    justify-content: center !important; /* Centers vertically */
+    width: 100% !important; /* Spans full width */
+    margin-bottom: 15px !important; /* Bottom margin */
 }
 
 /* Forces the "New Username:" label to center on its own line */
 .account-username-heading,
 label[for="newUsernameInput"] {
-    text-align: center !important;
-    display: block !important;
-    width: 100% !important;
-    margin-top: 15px !important;
-    margin-bottom: 5px !important;
+    text-align: center !important; /* Centered text */
+    display: block !important; /* Block element */
+    width: 100% !important; /* Spans full width */
+    margin-top: 15px !important; /* Top margin */
+    margin-bottom: 5px !important; /* Bottom margin */
+}
+
+/* ========================================== */
+/* 33. ACCOUNT SETTINGS VIEWPORT OVERFLOW FIX */
+/* ========================================== */
+
+/* Forces the account settings outer container to respect device boundaries and never overflow */
+.profile-page-container {
+    max-width: 550px; /* Max width constraint */
+    margin: 40px auto; /* Centered with vertical margin */
+    padding: 0 15px !important; /* Safe side margins on mobile phones */
+    width: 100% !important; /* Full width span */
+    box-sizing: border-box !important; /* Includes padding in width calculation */
+}
+
+/* Forces the settings card container to constrain within 100% and wrap padding correctly */
+.profile-settings-card {
+    background-color: #252c3d; /* Card background fill */
+    padding: 20px !important; /* Compact padding on mobile to prevent stretching */
+    border-radius: 12px; /* Rounded corners */
+    border: 1px solid #333c51; /* Border line */
+    display: flex; /* Flex layout */
+    flex-direction: column; /* Vertical alignment */
+    align-items: center; /* Centers horizontally */
+    text-align: center; /* Centered text */
+    width: 100% !important; /* Spans full width */
+    max-width: 100% !important; /* Caps max width */
+    box-sizing: border-box !important; /* Includes padding */
+    overflow-x: hidden !important; /* Prevents horizontal scrollbar overflow */
+}
+
+/* Forces all input fields, textboxes, and selects inside account settings to never overshoot */
+.profile-settings-card input[type="text"],
+.profile-settings-card input[type="password"],
+.profile-settings-card input[type="email"],
+.profile-settings-card input[type="date"],
+.profile-settings-card select,
+.profile-settings-card textarea,
+.profile-settings-card .current-email-box {
+    width: 100% !important; /* Spans 100% width */
+    max-width: 100% !important; /* Prevents container blowout */
+    box-sizing: border-box !important; /* Includes padding and borders */
+}
+
+/* Fixes the left and right account columns on mobile viewports */
+.account-left-column,
+.settings-section {
+    width: 100% !important; /* Spans full width */
+    max-width: 100% !important; /* Caps max width */
+    box-sizing: border-box !important; /* Includes padding */
+}
+
+/* Ensures the action button row scales correctly without breaking layout */
+.settings-action-row {
+    display: grid !important; /* Grid layout container */
+    grid-template-columns: 1fr 1fr 1fr !important; /* Three equal columns */
+    gap: 8px !important; /* Gap between buttons */
+    width: 100% !important; /* Full width span */
+    box-sizing: border-box !important; /* Includes padding */
+}
+
+/* Responsive stacking for mobile phones below 768px */
+@media (max-width: 768px) {
+    .settings-action-row {
+        grid-template-columns: 1fr !important; /* Stacks Save, Logout, and Delete buttons vertically on phones */
+    }
+    .profile-page-container {
+        padding: 0 10px !important; /* Tighter mobile side padding */
+        margin: 20px auto !important; /* Compact vertical margin */
+    }
+    .profile-settings-card {
+        padding: 15px !important; /* Compact card padding */
+    }
+}
+
+/* Desktop layout overrides (screens 900px and wider) */
+@media (min-width: 900px) {
+    .profile-page-container {
+        max-width: 1400px !important; /* Expands container width on desktop */
+        padding: 0 25px !important; /* Desktop horizontal padding */
+    }
+    .profile-settings-card {
+        display: grid !important; /* Two-column grid layout on desktop */
+        grid-template-columns: 320px 1fr !important; /* Avatar column and inputs column */
+        gap: 30px !important; /* Gap between columns */
+        align-items: start !important; /* Aligns to top */
+        text-align: left !important; /* Left aligns text */
+        padding: 30px !important; /* Desktop card padding */
+    }
+    .profile-settings-card h2 {
+        grid-column: span 2; /* Spans title across both columns */
+    }
+    .settings-grid-inputs {
+        display: grid; /* Grid container for inputs */
+        grid-template-columns: 1fr 1fr; /* Two equal columns */
+        gap: 15px; /* Gap between cells */
+    }
+    .full-width-field {
+        grid-column: span 2; /* Spans selected fields across both columns */
+    }
 }
