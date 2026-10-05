@@ -1,5 +1,5 @@
 /**
- * SceneScout Application Controller Script
+ * PopcornID Application Controller Script
  * Handles state management, UI navigation, authentication, media identification,
  * user profiles, and dynamic content feeds (including TV shows and movie news).
  */
@@ -27,7 +27,7 @@
 // ==========================================
 // 1. GLOBAL STATE VARIABLES
 // ==========================================
-const API_BASE_URL = "https://scenescout-sable.vercel.app"; // Defines live production Vercel backend API base URL string
+const API_BASE_URL = "https://popcornid-sable.vercel.app"; // Defines live production Vercel backend API base URL string
 
 let isSignUpMode = false;          // Tracks whether the auth screen is currently set to Sign Up or Sign In mode
 let currentPendingUser = "";       // Stores the username string of the actively logged-in or registering user account
@@ -59,21 +59,21 @@ const loadingQuotes = [
 
 // Humorous banner phrases array shown dynamically in the top navigation header or sidebar areas
 const navFunPhrases = [
-    "Forgot the title again? Hand your movie buff card right over to SceneScout!",  
-    "Even IMDb is judging your movie memory, which is why you crawled to SceneScout.",  
-    "Stumped by a classic again? Thank goodness SceneScout is here to babysit your movie night.",  
-    "Let me guess, it's on the tip of your tongue... so you opened SceneScout to do the thinking for you.",  
-    "Ah yes, my favorite movie: that one scene you're begging SceneScout to identify.",  
-    "You claim to love cinema yet couldn't name the protagonist without SceneScout saving you. Curious!",  
-    "Popcorn is ready, but your brain isn't—good thing SceneScout brought the answers.",  
-    "Let's consult SceneScout before your movie night completely falls apart.",  
-    "Even the film critics are shaking their heads at why you needed SceneScout for this one.",  
-    "Plot twist: you've seen this movie three times and still had to run to SceneScout.",  
-    "Couldn't figure it out yourself, huh? That's exactly why SceneScout exists.",  
-    "Surrendered to SceneScout because your film knowledge officially hit a wall? Fair enough.",  
-    "Another day, another obscure scene you're forcing SceneScout to explain to you.",  
-    "We both know Google gave you zero results, which is why you're crying for help on SceneScout.",  
-    "Staring blankly at the screen until SceneScout does all the heavy lifting for your movie trivia."
+    "Forgot the title again? Hand your movie buff card right over to PopcornID!",  
+    "Even IMDb is judging your movie memory, which is why you crawled to PopcornID.",  
+    "Stumped by a classic again? Thank goodness PopcornID is here to babysit your movie night.",  
+    "Let me guess, it's on the tip of your tongue... so you opened PopcornID to do the thinking for you.",  
+    "Ah yes, my favorite movie: that one scene you're begging PopcornID to identify.",  
+    "You claim to love cinema yet couldn't name the protagonist without PopcornID saving you. Curious!",  
+    "Popcorn is ready, but your brain isn't—good thing PopcornID brought the answers.",  
+    "Let's consult PopcornID before your movie night completely falls apart.",  
+    "Even the film critics are shaking their heads at why you needed PopcornID for this one.",  
+    "Plot twist: you've seen this movie three times and still had to run to PopcornID.",  
+    "Couldn't figure it out yourself, huh? That's exactly why PopcornID exists.",  
+    "Surrendered to PopcornID because your film knowledge officially hit a wall? Fair enough.",  
+    "Another day, another obscure scene you're forcing PopcornID to explain to you.",  
+    "We both know Google gave you zero results, which is why you're crying for help on PopcornID.",  
+    "Staring blankly at the screen until PopcornID does all the heavy lifting for your movie trivia."
 ];
 
 let quoteInterval = null; // Stores active interval reference timer ID used for periodically cycling loading quotes
@@ -192,7 +192,7 @@ function toggleAuthMode() {
     if (msg) msg.textContent = ""; // Clears existing status message text string content safely
 
     if (isSignUpMode) { // Checks if interface switched into user sign up mode state
-        if (title) title.textContent = "Create SceneScout Account"; // Updates heading text string for registration view
+        if (title) title.textContent = "Create PopcornID Account"; // Updates heading text string for registration view
         if (primaryBtn) primaryBtn.textContent = "Sign Up"; // Updates submission button label text string for registration
         if (toggleBtn) toggleBtn.textContent = "Already Have An Account? Sign In"; // Updates toggle prompt text string
         if (forgotBtn) forgotBtn.style.display = "none"; // Hides password recovery link element during sign up mode
@@ -200,7 +200,7 @@ function toggleAuthMode() {
         if (emailBr) emailBr.style.display = "inline"; // Displays email line break element 1
         if (emailBr2) emailBr2.style.display = "inline"; // Displays email line break element 2
     } else { // Handles standard user sign in mode interface state
-        if (title) title.textContent = "Sign In To SceneScout"; // Updates heading text string for sign in view
+        if (title) title.textContent = "Sign In To PopcornID"; // Updates heading text string for sign in view
         if (primaryBtn) primaryBtn.textContent = "Sign In"; // Updates submission button label text string for sign in
         if (toggleBtn) toggleBtn.textContent = "Need An Account? Sign Up"; // Updates toggle prompt text string
         if (forgotBtn) forgotBtn.style.display = "inline-block"; // Displays password recovery link element during sign in mode
@@ -236,7 +236,7 @@ function hideForgotPasswordView() {
 
     if (forgotSec) forgotSec.style.display = "none"; // Hides password recovery container section element
     if (credForm) credForm.style.display = "block"; // Restores standard credential inputs form block element on screen
-    if (authTitle) authTitle.textContent = "Sign In to SceneScout"; // Restores default sign-in heading text title string
+    if (authTitle) authTitle.textContent = "Sign In to PopcornID"; // Restores default sign-in heading text title string
     if (authMsg) authMsg.textContent = ""; // Clears status message text string content safely
 }
 
@@ -322,7 +322,7 @@ async function handleAuthSubmit() {
             currentPendingUser = username; // Stores active username string inside pending state memory variable
 
             if (isSignUpMode) { // Handles successful account registration completion flow
-                alert("SceneScout Account Created! Please Click Sign In."); // Displays success alert dialog popup box
+                alert("PopcornID Account Created! Please Click Sign In."); // Displays success alert dialog popup box
                 toggleAuthMode(); // Switches form view back to standard sign in mode interface state
             } else if (data.mfa_required) { // Checks if two-factor multi-factor authentication (MFA) step is required by server response
                 const credForm = document.getElementById("credentialsForm"); // Locates credentials login form container
@@ -378,13 +378,13 @@ async function verifyMfaCode() {
             userAuthToken = data.token; // Stores session token string in memory variable
             currentPendingUser = data.username; // Confirms authenticated username tracking string value
             
-            localStorage.setItem("scenescout_token", userAuthToken); // Stores session token string inside browser local storage cache
-            localStorage.setItem("scenescout_username", currentPendingUser); // Stores username string inside browser local storage cache
+            localStorage.setItem("PopcornID_token", userAuthToken); // Stores session token string inside browser local storage cache
+            localStorage.setItem("PopcornID_username", currentPendingUser); // Stores username string inside browser local storage cache
 
             if (data.profile && data.profile.avatar) { // Checks if user profile payload contains a custom avatar property
                 selectedAvatarValue = data.profile.avatar; // Updates avatar memory variable state string value
             }
-            localStorage.setItem("scenescout_avatar", selectedAvatarValue); // Stores active avatar string inside local storage cache
+            localStorage.setItem("PopcornID_avatar", selectedAvatarValue); // Stores active avatar string inside local storage cache
 
             const authScreen = document.getElementById("authScreen"); // Locates authentication full-screen overlay container
             const dashboardScreen = document.getElementById("dashboardScreen"); // Locates main dashboard layout container
@@ -435,14 +435,14 @@ async function fetchAndPopulateProfile() {
     try {
         const response = await fetch(`${API_BASE_URL}/api/profile`, {
             method: "GET",
-            headers: { "username": currentPendingUser || localStorage.getItem("scenescout_username") || "" }
+            headers: { "username": currentPendingUser || localStorage.getItem("PopcornID_username") || "" }
         }); // Sends HTTP GET request to fetch user profile data with active username request header
         const data = await response.json(); // Parses response body stream into a JSON object literal
         if (response.ok && data.success && data.profile) { // Validates successful profile retrieval response structure
             if (data.profile.avatar) { // Checks if profile data object includes an avatar property setting
                 selectedAvatarValue = data.profile.avatar; // Updates avatar memory variable state string
                 updateAvatarDisplay(selectedAvatarValue); // Refreshes UI avatar preview graphics rendering on screen
-                localStorage.setItem("scenescout_avatar", selectedAvatarValue); // Updates local storage avatar cache string
+                localStorage.setItem("PopcornID_avatar", selectedAvatarValue); // Updates local storage avatar cache string
             }
             const emailDisp = document.getElementById("currentEmailDisplay"); // Locates current email text display element
             const phoneInput = document.getElementById("profilePhone"); // Locates phone number input field element
@@ -469,9 +469,9 @@ function handleLogout() {
     userAuthToken = ""; // Clears session token memory state string value
     currentPendingUser = ""; // Clears active username tracking variable string value
 
-    localStorage.removeItem("scenescout_token"); // Clears authentication token string from browser local storage cache
-    localStorage.removeItem("scenescout_username"); // Clears saved username string from browser local storage cache
-    localStorage.removeItem("scenescout_avatar"); // Clears saved avatar setting string from browser local storage cache
+    localStorage.removeItem("PopcornID_token"); // Clears authentication token string from browser local storage cache
+    localStorage.removeItem("PopcornID_username"); // Clears saved username string from browser local storage cache
+    localStorage.removeItem("PopcornID_avatar"); // Clears saved avatar setting string from browser local storage cache
 
     const dashboardScreen = document.getElementById("dashboardScreen"); // Locates main dashboard screen container element
     const authScreen = document.getElementById("authScreen"); // Locates authentication full-screen overlay container element
@@ -605,7 +605,7 @@ async function loadMovieNews() {
 function selectPresetAvatar(iconChar) {
     selectedAvatarValue = iconChar; // Updates avatar memory variable state string with chosen character emoji
     updateAvatarDisplay(iconChar); // Triggers function to refresh UI avatar graphics elements across screen
-    localStorage.setItem("scenescout_avatar", iconChar); // Saves chosen avatar string into browser local storage cache
+    localStorage.setItem("PopcornID_avatar", iconChar); // Saves chosen avatar string into browser local storage cache
     
     const fileInput = document.getElementById("profileAvatarInput"); // Locates custom file upload input element in DOM
     if (fileInput) fileInput.value = ""; // Resets file input value string so presets override any previously uploaded files
@@ -625,7 +625,7 @@ function selectPresetAvatar(iconChar) {
  */
 function updateAvatarDisplay(avatarSrcOrChar) {
     selectedAvatarValue = avatarSrcOrChar; // Updates global memory variable state string
-    localStorage.setItem("scenescout_avatar", avatarSrcOrChar); // Caches active avatar string inside browser local storage
+    localStorage.setItem("PopcornID_avatar", avatarSrcOrChar); // Caches active avatar string inside browser local storage
     
     const profileImg = document.getElementById("profileAvatarPreview"); // Locates profile hub avatar display container element in DOM
     const navImg = document.getElementById("navAvatarPreview"); // Locates top navigation bar avatar preview element in DOM
@@ -667,7 +667,7 @@ function previewProfileAvatar() {
         reader.onload = function(e) { // Defines callback function executed when file reading reader operation completes
             selectedAvatarValue = e.target.result; // Stores base64 data URL string result in memory variable
             updateAvatarDisplay(selectedAvatarValue); // Refreshes UI avatar preview elements with new image data string
-            localStorage.setItem("scenescout_avatar", selectedAvatarValue); // Saves base64 image string inside browser local storage cache
+            localStorage.setItem("PopcornID_avatar", selectedAvatarValue); // Saves base64 image string inside browser local storage cache
             document.querySelectorAll(".preset-icon").forEach(el => el.classList.remove("selected")); // Clears preset icon selection highlight classes
         };
         reader.readAsDataURL(fileInput.files[0]); // Reads uploaded file object as a base64 encoded data URL string
@@ -707,7 +707,7 @@ async function saveProfile() {
         return; // Exits execution flow early
     }
 
-    const activeUser = currentPendingUser || localStorage.getItem("scenescout_username") || ""; // Determines active username string
+    const activeUser = currentPendingUser || localStorage.getItem("PopcornID_username") || ""; // Determines active username string
 
     try {
         const response = await fetch(`${API_BASE_URL}/api/profile/update`, {
@@ -745,7 +745,7 @@ async function saveProfile() {
                 showSuccessModal("Settings Updated Successfully!"); // Displays general success confirmation inside custom styled modal window
                 if (data.new_username) { // Checks if username string was successfully changed by backend
                     currentPendingUser = data.new_username; // Updates active username tracking variable string value
-                    localStorage.setItem("scenescout_username", currentPendingUser); // Updates local storage username cache string
+                    localStorage.setItem("PopcornID_username", currentPendingUser); // Updates local storage username cache string
                     const disp = document.getElementById("displayUsername"); // Locates profile username display element in DOM
                     if (disp) disp.textContent = currentPendingUser; // Updates username label text string content
                     const navUsr = document.getElementById("navUsername"); // Locates top navigation username label element in DOM
@@ -761,7 +761,7 @@ async function saveProfile() {
                 if (data.profile && data.profile.avatar) {
                     selectedAvatarValue = data.profile.avatar; // Updates avatar memory variable state string value
                     updateAvatarDisplay(selectedAvatarValue); // Refreshes UI avatar preview graphics rendering on screen
-                    localStorage.setItem("scenescout_avatar", selectedAvatarValue); // Updates local storage avatar cache string
+                    localStorage.setItem("PopcornID_avatar", selectedAvatarValue); // Updates local storage avatar cache string
                 }
             }
         } else {
@@ -777,11 +777,11 @@ async function saveProfile() {
  * Permanently deletes the user account after obtaining explicit confirmation from the user.
  */
 async function deleteAccount() {
-    if (!confirm("Are You Sure You Want To Delete Your SceneScout Account? This Action Cannot Be UNDONE!")) {
+    if (!confirm("Are You Sure You Want To Delete Your PopcornID Account? This Action Cannot Be UNDONE!")) {
         return; // Exits execution flow early if user cancels deletion confirmation prompt dialog box
     }
 
-    const activeUser = currentPendingUser || localStorage.getItem("scenescout_username") || ""; // Determines active username string
+    const activeUser = currentPendingUser || localStorage.getItem("PopcornID_username") || ""; // Determines active username string
 
     try {
         const response = await fetch(`${API_BASE_URL}/api/account/delete`, {
@@ -808,9 +808,9 @@ async function deleteAccount() {
 // 8. APP INITIALIZATION & DRAG/DROP LISTENERS
 // ==========================================
 document.addEventListener("DOMContentLoaded", () => {
-    const savedToken = localStorage.getItem("scenescout_token"); // Retrieves saved session token string from browser local storage cache
-    const savedUsername = localStorage.getItem("scenescout_username"); // Retrieves saved username string from browser local storage cache
-    const savedAvatar = localStorage.getItem("scenescout_avatar"); // Retrieves saved avatar setting string from browser local storage cache
+    const savedToken = localStorage.getItem("PopcornID_token"); // Retrieves saved session token string from browser local storage cache
+    const savedUsername = localStorage.getItem("PopcornID_username"); // Retrieves saved username string from browser local storage cache
+    const savedAvatar = localStorage.getItem("PopcornID_avatar"); // Retrieves saved avatar setting string from browser local storage cache
 
     if (savedToken && savedUsername) { // Checks if valid session token and username strings exist in local storage cache
         userAuthToken = savedToken; // Restores session token memory state string value
@@ -1107,12 +1107,12 @@ function displayTvShows(shows) {
  * @param {Object} show - The TV show data object to add to favorites
  */
 function quickAddFavorite(show) {
-    const savedFavs = JSON.parse(localStorage.getItem("scenescout_favorites") || "[]"); // Retrieves existing favorite items array from local storage cache
+    const savedFavs = JSON.parse(localStorage.getItem("PopcornID_favorites") || "[]"); // Retrieves existing favorite items array from local storage cache
     const exists = savedFavs.some(fav => fav.title === show.title); // Checks if show title is already saved in favorites list array
     
     if (!exists) { // Checks if show is not already present in favorites list
         savedFavs.push({ title: show.title, type: "TV Show", poster: show.poster || "" }); // Appends new show favorite object to array
-        localStorage.setItem("scenescout_favorites", JSON.stringify(savedFavs)); // Saves updated favorites array back to local storage cache
+        localStorage.setItem("PopcornID_favorites", JSON.stringify(savedFavs)); // Saves updated favorites array back to local storage cache
         showSuccessModal(`⭐ "${show.title}" Added To Your My Profile Favorite TV Shows!`); // Displays success confirmation inside custom modal window
     } else {
         showSuccessModal(`"${show.title}" Is Already In Your Favorites.`); // Displays warning notice inside custom modal window
@@ -1188,13 +1188,13 @@ function saveRatingModal(isExplicitSave) {
         starsString += (i < selectedStarCount) ? "★" : "☆"; // Appends filled or hollow star character symbol based on selected count
     }
     
-    const savedRatings = JSON.parse(localStorage.getItem("scenescout_ratings") || "[]"); // Retrieves existing ratings logs array from local storage cache
+    const savedRatings = JSON.parse(localStorage.getItem("PopcornID_ratings") || "[]"); // Retrieves existing ratings logs array from local storage cache
     savedRatings.unshift({ 
         title: currentRatingTargetTitle, 
         stars: starsString, 
         review: reviewText || "Great Series!" 
     }); // Prepends new rating log object to beginning of array
-    localStorage.setItem("scenescout_ratings", JSON.stringify(savedRatings)); // Saves updated ratings logs array back to local storage cache
+    localStorage.setItem("PopcornID_ratings", JSON.stringify(savedRatings)); // Saves updated ratings logs array back to local storage cache
     
     closeRatingModal(); // Closes rating modal popup window after successful save operation completes
     showSuccessModal(`📊 Rating Saved to My Profile Logbook!`); // Displays success confirmation inside custom modal window
@@ -1385,8 +1385,8 @@ async function fetchGlobalTvShowFromTVmaze(query) {
 // 12. PROFILE PAGE DYNAMIC DATA & STORAGE LOGIC
 // ==========================================
 document.addEventListener("DOMContentLoaded", () => {
-    const savedUsername = localStorage.getItem("scenescout_username"); // Retrieves saved username string from local storage cache
-    const savedAvatar = localStorage.getItem("scenescout_avatar"); // Retrieves saved avatar string from local storage cache
+    const savedUsername = localStorage.getItem("PopcornID_username"); // Retrieves saved username string from local storage cache
+    const savedAvatar = localStorage.getItem("PopcornID_avatar"); // Retrieves saved avatar string from local storage cache
 
     if (savedUsername) { // Checks if saved username string exists in local storage cache
         const navUserElem = document.getElementById("navUsername"); // Locates top nav username element in DOM
@@ -1407,7 +1407,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    const savedBio = localStorage.getItem("scenescout_bio"); // Retrieves saved biographical text string from local storage cache
+    const savedBio = localStorage.getItem("PopcornID_bio"); // Retrieves saved biographical text string from local storage cache
     const bioDisplay = document.getElementById("hubUserBioDisplay"); // Locates bio display text element in DOM
     const bioInput = document.getElementById("profileBioInput"); // Locates bio text input element in DOM
 
@@ -1431,7 +1431,7 @@ function saveBio() {
     
     if (bioInput && bioInput.value.trim() !== "") { // Checks if bio input field contains valid non-empty text string
         const bioText = bioInput.value.trim(); // Extracts and trims biographical text string value
-        localStorage.setItem("scenescout_bio", bioText); // Saves biographical text string inside local storage cache
+        localStorage.setItem("PopcornID_bio", bioText); // Saves biographical text string inside local storage cache
         
         if (bioDisplay) {
             bioDisplay.textContent = `"${bioText}"`; // Updates bio display element text content string
@@ -1445,7 +1445,7 @@ function saveBio() {
  * Loads and renders all saved user profile lists (favorites, recommendations, genre tags, friends, and rated logbook items) from local storage.
  */
 function loadSavedProfileData() {
-    const savedFavs = JSON.parse(localStorage.getItem("scenescout_favorites") || "[]"); // Retrieves saved favorites items array from local storage cache
+    const savedFavs = JSON.parse(localStorage.getItem("PopcornID_favorites") || "[]"); // Retrieves saved favorites items array from local storage cache
     const moviesGrid = document.getElementById("favoriteMoviesGrid"); // Locates favorite movies grid container element in DOM
     const tvGrid = document.getElementById("favoriteTvShowsGrid"); // Locates favorite TV shows grid container element in DOM
     
@@ -1482,7 +1482,7 @@ function loadSavedProfileData() {
         tvGrid.innerHTML = `<div class="empty-list-notice">No TV shows Added Yet.</div>`; // Renders empty notice message card string
     }
 
-    const savedRecs = JSON.parse(localStorage.getItem("scenescout_recommendations") || "[]"); // Retrieves saved recommendations array from local storage cache
+    const savedRecs = JSON.parse(localStorage.getItem("PopcornID_recommendations") || "[]"); // Retrieves saved recommendations array from local storage cache
     const recMoviesGrid = document.getElementById("recommendedMoviesGrid"); // Locates recommended movies grid container element in DOM
     const recTvGrid = document.getElementById("recommendedTvShowsGrid"); // Locates recommended TV shows grid container element in DOM
 
@@ -1519,7 +1519,7 @@ function loadSavedProfileData() {
         }
     }
 
-    const savedGenres = JSON.parse(localStorage.getItem("scenescout_genres") || "[]"); // Retrieves saved genre tags array from local storage cache
+    const savedGenres = JSON.parse(localStorage.getItem("PopcornID_genres") || "[]"); // Retrieves saved genre tags array from local storage cache
     const genreContainer = document.getElementById("genreTagsContainer"); // Locates genre tags container element in DOM
     if (genreContainer) { // Checks if genre container element exists in DOM structure
         genreContainer.innerHTML = ""; // Clears genre tags container HTML content string safely
@@ -1531,7 +1531,7 @@ function loadSavedProfileData() {
         });
     }
 
-    const savedFriends = JSON.parse(localStorage.getItem("scenescout_friends") || "[]"); // Retrieves saved friends array from local storage cache
+    const savedFriends = JSON.parse(localStorage.getItem("PopcornID_friends") || "[]"); // Retrieves saved friends array from local storage cache
     const friendContainer = document.getElementById("friendsListContainer"); // Locates friends list container element in DOM
     if (friendContainer) { // Checks if friends container element exists in DOM structure
         if (savedFriends.length > 0) { // Checks if saved friends array contains items
@@ -1547,7 +1547,7 @@ function loadSavedProfileData() {
         }
     }
 
-    const savedRatings = JSON.parse(localStorage.getItem("scenescout_ratings") || "[]"); // Retrieves saved ratings logs array from local storage cache
+    const savedRatings = JSON.parse(localStorage.getItem("PopcornID_ratings") || "[]"); // Retrieves saved ratings logs array from local storage cache
     const logContainer = document.getElementById("ratedLogContainer"); // Locates rated logbook container element in DOM
     if (logContainer) { // Checks if log container element exists in DOM structure
         if (savedRatings.length > 0) { // Checks if saved ratings array contains items
@@ -1574,9 +1574,9 @@ function loadSavedProfileData() {
  * @param {number} index - Index integer of favorite item to delete
  */
 function deleteFavorite(index) {
-    let savedFavs = JSON.parse(localStorage.getItem("scenescout_favorites") || "[]"); // Retrieves existing favorites array
+    let savedFavs = JSON.parse(localStorage.getItem("PopcornID_favorites") || "[]"); // Retrieves existing favorites array
     savedFavs.splice(index, 1); // Removes 1 item element at specified index integer using splice method
-    localStorage.setItem("scenescout_favorites", JSON.stringify(savedFavs)); // Saves updated favorites array back to local storage cache
+    localStorage.setItem("PopcornID_favorites", JSON.stringify(savedFavs)); // Saves updated favorites array back to local storage cache
     loadSavedProfileData(); // Reloads and re-renders profile data lists on screen
 }
 
@@ -1585,9 +1585,9 @@ function deleteFavorite(index) {
  * @param {number} index - Index integer of recommendation item to delete
  */
 function deleteRecommendation(index) {
-    let savedRecs = JSON.parse(localStorage.getItem("scenescout_recommendations") || "[]"); // Retrieves existing recommendations array
+    let savedRecs = JSON.parse(localStorage.getItem("PopcornID_recommendations") || "[]"); // Retrieves existing recommendations array
     savedRecs.splice(index, 1); // Removes 1 item element at specified index integer using splice method
-    localStorage.setItem("scenescout_recommendations", JSON.stringify(savedRecs)); // Saves updated recommendations array back to local storage cache
+    localStorage.setItem("PopcornID_recommendations", JSON.stringify(savedRecs)); // Saves updated recommendations array back to local storage cache
     loadSavedProfileData(); // Reloads and re-renders profile data lists on screen
 }
 
@@ -1596,9 +1596,9 @@ function deleteRecommendation(index) {
  * @param {number} index - Index integer of genre tag string to delete
  */
 function deleteGenre(index) {
-    let savedGenres = JSON.parse(localStorage.getItem("scenescout_genres") || "[]"); // Retrieves existing genre tags array
+    let savedGenres = JSON.parse(localStorage.getItem("PopcornID_genres") || "[]"); // Retrieves existing genre tags array
     savedGenres.splice(index, 1); // Removes 1 item element at specified index integer using splice method
-    localStorage.setItem("scenescout_genres", JSON.stringify(savedGenres)); // Saves updated genre tags array back to local storage cache
+    localStorage.setItem("PopcornID_genres", JSON.stringify(savedGenres)); // Saves updated genre tags array back to local storage cache
     loadSavedProfileData(); // Reloads and re-renders profile data lists on screen
 }
 
@@ -1607,9 +1607,9 @@ function deleteGenre(index) {
  * @param {number} index - Index integer of friend username string to delete
  */
 function deleteFriend(index) {
-    let savedFriends = JSON.parse(localStorage.getItem("scenescout_friends") || "[]"); // Retrieves existing friends array
+    let savedFriends = JSON.parse(localStorage.getItem("PopcornID_friends") || "[]"); // Retrieves existing friends array
     savedFriends.splice(index, 1); // Removes 1 item element at specified index integer using splice method
-    localStorage.setItem("scenescout_friends", JSON.stringify(savedFriends)); // Saves updated friends array back to local storage cache
+    localStorage.setItem("PopcornID_friends", JSON.stringify(savedFriends)); // Saves updated friends array back to local storage cache
     loadSavedProfileData(); // Reloads and re-renders profile data lists on screen
 }
 
@@ -1618,9 +1618,9 @@ function deleteFriend(index) {
  * @param {number} index - Index integer of rating log object to delete
  */
 function deleteRating(index) {
-    let savedRatings = JSON.parse(localStorage.getItem("scenescout_ratings") || "[]"); // Retrieves existing ratings array
+    let savedRatings = JSON.parse(localStorage.getItem("PopcornID_ratings") || "[]"); // Retrieves existing ratings array
     savedRatings.splice(index, 1); // Removes 1 item element at specified index integer using splice method
-    localStorage.setItem("scenescout_ratings", JSON.stringify(savedRatings)); // Saves updated ratings array back to local storage cache
+    localStorage.setItem("PopcornID_ratings", JSON.stringify(savedRatings)); // Saves updated ratings array back to local storage cache
     loadSavedProfileData(); // Reloads and re-renders profile data lists on screen
 }
 
@@ -1653,9 +1653,9 @@ function addFavoriteTitle() {
  */
 function saveFavoriteItem(title, type, posterUrl) {
     const newItem = { title: title, type: type, poster: posterUrl }; // Creates new favorite item object literal structure
-    const savedFavs = JSON.parse(localStorage.getItem("scenescout_favorites") || "[]"); // Retrieves existing favorites array from local storage cache
+    const savedFavs = JSON.parse(localStorage.getItem("PopcornID_favorites") || "[]"); // Retrieves existing favorites array from local storage cache
     savedFavs.push(newItem); // Appends new favorite item object to array
-    localStorage.setItem("scenescout_favorites", JSON.stringify(savedFavs)); // Saves updated favorites array back to local storage cache
+    localStorage.setItem("PopcornID_favorites", JSON.stringify(savedFavs)); // Saves updated favorites array back to local storage cache
 
     document.getElementById("favTitleInput").value = ""; // Resets favorite title text input value string to empty
     document.getElementById("favPosterFileInput").value = ""; // Resets custom poster file input value
@@ -1692,9 +1692,9 @@ function addRecommendation() {
  */
 function saveRecommendationItem(title, type, posterUrl) {
     const newRec = { title: title, type: type, poster: posterUrl }; // Creates new recommendation item object literal structure
-    const savedRecs = JSON.parse(localStorage.getItem("scenescout_recommendations") || "[]"); // Retrieves existing recommendations array from local storage cache
+    const savedRecs = JSON.parse(localStorage.getItem("PopcornID_recommendations") || "[]"); // Retrieves existing recommendations array from local storage cache
     savedRecs.push(newRec); // Appends new recommendation item object to array
-    localStorage.setItem("scenescout_recommendations", JSON.stringify(savedRecs)); // Saves updated recommendations array back to local storage cache
+    localStorage.setItem("PopcornID_recommendations", JSON.stringify(savedRecs)); // Saves updated recommendations array back to local storage cache
 
     document.getElementById("recommendationInput").value = ""; // Resets recommendation title text input value string to empty
     document.getElementById("recommendationPosterFileInput").value = ""; // Resets custom poster file input value
@@ -1709,10 +1709,10 @@ function addGenre() {
     const select = document.getElementById("genreSelect"); // Locates genre select dropdown element in DOM
     const genre = select.value; // Extracts selected genre string value
 
-    const savedGenres = JSON.parse(localStorage.getItem("scenescout_genres") || "[]"); // Retrieves existing genre tags array from local storage cache
+    const savedGenres = JSON.parse(localStorage.getItem("PopcornID_genres") || "[]"); // Retrieves existing genre tags array from local storage cache
     if (!savedGenres.includes(genre)) { // Checks if genre string is not already present in array
         savedGenres.push(genre); // Appends new genre string to array
-        localStorage.setItem("scenescout_genres", JSON.stringify(savedGenres)); // Saves updated genre tags array back to local storage cache
+        localStorage.setItem("PopcornID_genres", JSON.stringify(savedGenres)); // Saves updated genre tags array back to local storage cache
     }
 
     loadSavedProfileData(); // Reloads and re-renders profile data lists on screen
@@ -1726,10 +1726,10 @@ function addFriend() {
     if (!input.value.trim()) return; // Exits function early if input value string is empty
 
     const friendName = input.value.trim(); // Extracts and trims friend username string value safely
-    const savedFriends = JSON.parse(localStorage.getItem("scenescout_friends") || "[]"); // Retrieves existing friends array from local storage cache
+    const savedFriends = JSON.parse(localStorage.getItem("PopcornID_friends") || "[]"); // Retrieves existing friends array from local storage cache
     if (!savedFriends.includes(friendName)) { // Checks if friend username string is not already present in array
         savedFriends.push(friendName); // Appends new friend username string to array
-        localStorage.setItem("scenescout_friends", JSON.stringify(savedFriends)); // Saves updated friends array back to local storage cache
+        localStorage.setItem("PopcornID_friends", JSON.stringify(savedFriends)); // Saves updated friends array back to local storage cache
     }
 
     input.value = ""; // Resets friend search input text value string to empty
@@ -1750,9 +1750,9 @@ function submitPersonalRating() {
     }
 
     const newRating = { title, stars, review }; // Creates new rating object literal structure
-    const savedRatings = JSON.parse(localStorage.getItem("scenescout_ratings") || "[]"); // Retrieves existing ratings array from local storage cache
+    const savedRatings = JSON.parse(localStorage.getItem("PopcornID_ratings") || "[]"); // Retrieves existing ratings array from local storage cache
     savedRatings.unshift(newRating); // Prepends new rating object to beginning of array
-    localStorage.setItem("scenescout_ratings", JSON.stringify(savedRatings)); // Saves updated ratings array back to local storage cache
+    localStorage.setItem("PopcornID_ratings", JSON.stringify(savedRatings)); // Saves updated ratings array back to local storage cache
 
     document.getElementById("rateTitleInput").value = ""; // Resets rate title input value string to empty
     document.getElementById("ratingReviewInput").value = ""; // Resets rating review input value string to empty
@@ -1767,8 +1767,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const tvFeedElem = document.getElementById("tvShowsFeed"); // Locates TV shows feed grid container element in DOM
     if (!tvFeedElem) return; // Exits execution early if TV shows feed element does not exist on page
 
-    const savedUsername = localStorage.getItem("scenescout_username"); // Retrieves saved username string from local storage cache
-    const savedAvatar = localStorage.getItem("scenescout_avatar"); // Retrieves saved avatar string from local storage cache
+    const savedUsername = localStorage.getItem("PopcornID_username"); // Retrieves saved username string from local storage cache
+    const savedAvatar = localStorage.getItem("PopcornID_avatar"); // Retrieves saved avatar string from local storage cache
 
     if (savedUsername) { // Checks if saved username string exists in local storage cache
         const navUserElem = document.getElementById("navUsername"); // Locates top navigation username text span element in DOM
@@ -1814,7 +1814,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const profilePageElem = document.getElementById("profilePage"); // Locates profile page container element in account.html DOM
     if (!profilePageElem) return; // Exits execution early if not running on account.html settings page
 
-    const activeUsername = localStorage.getItem("scenescout_username") || "Beau15"; // Retrieves active username string from local storage cache or fallback
+    const activeUsername = localStorage.getItem("PopcornID_username") || "Beau15"; // Retrieves active username string from local storage cache or fallback
 
     const navUsernameEl = document.getElementById("navUsername"); // Locates navigation username element in DOM
     const hamburgerUsernameEl = document.getElementById("hamburgerUsername"); // Locates hamburger menu username element in DOM
