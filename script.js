@@ -27,7 +27,7 @@
 // ==========================================
 // 1. GLOBAL STATE VARIABLES
 // ==========================================
-const API_BASE_URL = "https://popcornid-sable.vercel.app"; // Defines live production Vercel backend API base URL string
+const API_BASE_URL = "https://popcornid.com"; // Defines live production Vercel backend API base URL string
 
 let isSignUpMode = false;          // Tracks whether the auth screen is currently set to Sign Up or Sign In mode
 let currentPendingUser = "";       // Stores the username string of the actively logged-in or registering user account
