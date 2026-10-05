@@ -37,6 +37,7 @@
   33. ACCOUNT SETTINGS VIEWPORT OVERFLOW FIX
   34. REAL IOS SAFARI VIEWPORT CONTAINER & INPUT SIZING LOCKDOWN
   35. UNIFORM CONTAINER WIDTH STANDARDIZATION (LOGIN & ACCOUNT)
+  36. MATCH ACCOUNT SETTINGS WIDTH EXACTLY TO TOP NAV BAR
 */
 
 /* ========================================== */
@@ -2504,33 +2505,6 @@ label[for="newUsernameInput"] {
     }
 }
 
-/* Desktop layout overrides (screens 900px and wider) */
-@media (min-width: 900px) {
-    .profile-page-container {
-        max-width: 1400px !important; /* Expands container width on desktop */
-        padding: 0 25px !important; /* Desktop horizontal padding */
-    }
-    .profile-settings-card {
-        display: grid !important; /* Two-column grid layout on desktop */
-        grid-template-columns: 320px 1fr !important; /* Avatar column and inputs column */
-        gap: 30px !important; /* Gap between columns */
-        align-items: start !important; /* Aligns to top */
-        text-align: left !important; /* Left aligns text */
-        padding: 30px !important; /* Desktop card padding */
-    }
-    .profile-settings-card h2 {
-        grid-column: span 2; /* Spans title across both columns */
-    }
-    .settings-grid-inputs {
-        display: grid; /* Grid container for inputs */
-        grid-template-columns: 1fr 1fr; /* Two equal columns */
-        gap: 15px; /* Gap between cells */
-    }
-    .full-width-field {
-        grid-column: span 2; /* Spans selected fields across both columns */
-    }
-}
-
 /* ========================================== */
 /* 34. REAL IOS SAFARI VIEWPORT CONTAINER &   */
 /*     INPUT SIZING LOCKDOWN                  */
@@ -2574,18 +2548,23 @@ input[type="date"] {
 /* 35. UNIFORM CONTAINER WIDTH STANDARDIZATION*/
 /* ========================================== */
 
-/* Locks the authentication and login card box to a clean, uniform width matching TV Shows & Profile Hub */
+/* Locks the authentication and login card box to a clean, uniform width */
 .auth-box {
     max-width: 520px !important; /* Standardized max width for login cards */
     margin: 0 auto !important; /* Centers card horizontally */
     box-sizing: border-box !important; /* Includes padding */
 }
 
-/* Locks the account settings container to a balanced width on desktop viewports */
+/* ========================================== */
+/* 36. MATCH ACCOUNT SETTINGS WIDTH EXACTLY   */
+/*     TO TOP NAV BAR (1400px)                */
+/* ========================================== */
+
 @media (min-width: 900px) {
+    /* Matches account container max-width exactly to top nav banner and TV shows page (1400px) */
     .profile-page-container {
-        max-width: 950px !important; /* Balanced container width preventing giant stretched forms */
-        margin: 40px auto !important; /* Centers container */
-        padding: 0 20px !important; /* Safe side padding */
+        max-width: 1400px !important; 
+        margin: 40px auto !important; 
+        padding: 0 25px !important; /* Matches 25px horizontal padding of top nav banner */
     }
 }
