@@ -2570,16 +2570,14 @@ input[type="date"] {
 }
 
 /* ========================================== */
-/* 37. RESPONSIVE HEADER TEXT COLLAPSE        */
+/* 37. RESPONSIVE HEADER TEXT FLUID SHRINK    */
 /* ========================================== */
 @media (max-width: 1024px) {
-    /* Truncates the tagline subtitle on smaller screens to prevent hamburger menu overlap */
     .combined-fact-center-content .nav-fun-text {
-        font-size: 0.5rem !important;
-        max-width: 220px;
-        margin: 0 auto;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        font-size: clamp(0.7rem, 2vw, 0.95rem) !important; /* Dynamically scales down smoothly without getting big */
         white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        max-width: 100% !important;
     }
 }
