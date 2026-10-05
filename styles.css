@@ -2575,24 +2575,8 @@ input[type="date"] {
 @media (max-width: 1024px) {
     .combined-fact-center-content .nav-fun-text {
         font-size: clamp(0.7rem, 2vw, 0.95rem) !important; /* Dynamically scales down smoothly without getting big */
-        white-space: nowrap !important;       
+        white-space: wrap !important;       
         text-overflow: ellipsis !important;
         max-width: 100% !important;
-    }
-}
-
-/* ========================================== */
-/* 38. DESKTOP VS MOBILE HEADER TEXT SWITCH   */
-/* ========================================== */
-
-/* Desktop view: Shows the full long tagline */
-.combined-fact-center-content .nav-fun-text::after {
-    content: " - ID Movies Titles Instantly!";
-}
-
-/* Mobile & Tablet view (below 1024px): Hides the tagline so it only says "Welcome to PopcornID" */
-@media (max-width: 1024px) {
-    .combined-fact-center-content .nav-fun-text::after {
-        content: "" !important;
     }
 }
