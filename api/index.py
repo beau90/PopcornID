@@ -26,7 +26,7 @@ load_dotenv()
 # ==========================================
 # 2. FASTAPI APP INITIALIZATION & CORS SETUP
 # ==========================================
-app = FastAPI(title="SceneScout API") # Initializes the main FastAPI application instance with a custom app title
+app = FastAPI(title="PopcornID API") # Initializes the main FastAPI application instance with a custom app title
 
 # Adds cross-origin resource sharing middleware rules to the FastAPI application
 app.add_middleware(
@@ -208,7 +208,7 @@ async def register(data: dict):
     }
     save_user_to_db(username, users_db[username]) # Persists newly created user record directly into Supabase
 
-    return {"success": True, "message": "SceneScout account created successfully."} # Returns success JSON response
+    return {"success": True, "message": "PopcornID account created successfully."} # Returns success JSON response
 
 @app.post("/api/login")
 async def login(data: dict):
@@ -226,9 +226,9 @@ async def login(data: dict):
 
     # Constructs the email message payload schema to send to user's registered email address
     message = MessageSchema(
-        subject="Your SceneScout Verification Code",
+        subject="Your PopcornID Verification Code",
         recipients=[user["email"]],
-        body=f"Your 6-digit SceneScout verification code is: {code}",
+        body=f"Your 6-digit Popcorn ID verification code is: {code}",
         subtype=MessageType.plain
     )
     try:
