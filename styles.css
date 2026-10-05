@@ -146,22 +146,22 @@ body {
     animation: floatUp 15s infinite linear; /* Continuously loops upward floating animation */
 }
 
-/* Specific styling for popcorn kernel particles */
+/* Specific styling for popcorn emoji particles */
 .particle.popcorn {
-    width: 12px;                    /* Particle width */
-    height: 12px;                   /* Particle height */
-    background-color: #fef08a;    /* Soft buttery yellow fill color */
-    border-radius: 50% 40% 60% 40%; /* Organic rounded kernel shape */
-    box-shadow: 0 0 8px rgba(254, 240, 138, 0.8); /* Brighter yellow glow effect */
+    font-size: 1.4rem;                        /* Controls the display size of the floating popcorn emoji */
+    background-color: transparent !important;   /* Clears out the old colored background fill block */
+    border-radius: 0 !important;              /* Removes the old organic shape border radius */
+    box-shadow: none !important;              /* Clears the old box shadow */
+    filter: drop-shadow(0 0 6px rgba(254, 240, 138, 0.6)); /* Adds a soft buttery yellow glow effect around the emoji */
 }
 
-/* Specific styling for film strip particles */
+/* Specific styling for film strip emoji particles */
 .particle.film-strip {
-    width: 14px;                    /* Particle width */
-    height: 20px;                   /* Particle height */
-    background-color: #334155;    /* Dark film strip grey fill */
-    border: 1px dashed #cbd5e1;   /* Brighter dashed border mimicking film perforation blocks */
-    box-shadow: 0 0 6px rgba(148, 163, 184, 0.4); /* Soft outline glow */
+    font-size: 1.3rem;                        /* Controls the display size of the floating film strip emoji */
+    background-color: transparent !important;   /* Clears out the old grey background block */
+    border: none !important;                  /* Removes the old dashed border lines */
+    box-shadow: none !important;              /* Clears the old box shadow */
+    filter: drop-shadow(0 0 6px rgba(148, 163, 184, 0.6)); /* Adds a soft glowing shadow effect around the emoji */
 }
 
 /* Random positioning and animation timing offsets for all 16 particles */
