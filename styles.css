@@ -2575,8 +2575,7 @@ input[type="date"] {
 @media (max-width: 1024px) {
     .combined-fact-center-content .nav-fun-text {
         font-size: clamp(0.7rem, 2vw, 0.95rem) !important; /* Dynamically scales down smoothly without getting big */
-        white-space: nowrap !important;
-        overflow: hidden !important;
+        white-space: nowrap !important;       
         text-overflow: ellipsis !important;
         max-width: 75% !important;
     }
