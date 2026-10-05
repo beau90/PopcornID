@@ -2578,6 +2578,6 @@ input[type="date"] {
         white-space: nowrap !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
-        max-width: 100% !important;
+        max-width: 75% !important;
     }
 }
