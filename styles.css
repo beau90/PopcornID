@@ -36,6 +36,7 @@
   32. PROFILE USERNAME CENTERING STYLES
   33. ACCOUNT SETTINGS VIEWPORT OVERFLOW FIX
   34. REAL IOS SAFARI VIEWPORT CONTAINER & INPUT SIZING LOCKDOWN
+  35. UNIFORM CONTAINER WIDTH STANDARDIZATION (LOGIN & ACCOUNT)
 */
 
 /* ========================================== */
@@ -2567,4 +2568,24 @@ input[type="date"] {
     max-width: 100% !important; /* Max constraint */
     box-sizing: border-box !important; /* Includes padding */
     overflow-x: hidden !important; /* Clips internal overflow */
+}
+
+/* ========================================== */
+/* 35. UNIFORM CONTAINER WIDTH STANDARDIZATION*/
+/* ========================================== */
+
+/* Locks the authentication and login card box to a clean, uniform width matching TV Shows & Profile Hub */
+.auth-box {
+    max-width: 520px !important; /* Standardized max width for login cards */
+    margin: 0 auto !important; /* Centers card horizontally */
+    box-sizing: border-box !important; /* Includes padding */
+}
+
+/* Locks the account settings container to a balanced width on desktop viewports */
+@media (min-width: 900px) {
+    .profile-page-container {
+        max-width: 950px !important; /* Balanced container width preventing giant stretched forms */
+        margin: 40px auto !important; /* Centers container */
+        padding: 0 20px !important; /* Safe side padding */
+    }
 }
