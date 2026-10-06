@@ -115,56 +115,65 @@
         
         <!-- Top Banner Wrapper -->
         <div class="top-fact-banner-wrapper">
-            <!-- Card container utilizing the combined film-strip layout styling -->
-            <div class="profile-section-card top-fact-card combined-fact-nav-card">
+            <!-- Card container utilizing the combined film-strip layout styling, converted to a vertical flex column layout -->
+            <div class="profile-section-card top-fact-card combined-fact-nav-card" style="flex-direction: column; align-items: center; padding: 20px 25px;">
                 
-                <!-- Left Group: Logo with Mascot Speech Bubble side-by-side -->
-                <div class="nav-left-group index-nav-left">
-                    <a href="index.html" class="tv-nav-logo-link index-logo-link">
-                        <!-- PopcornID brand logo image -->
-                        <img src="logo.png" alt="PopcornID Logo" class="tv-nav-logo index-nav-logo-img">
-                    </a>
-                    
-                    <!-- Mascot Speech Bubble Container -->
-                    <div class="mascot-speech-bubble">
-                        <h3 class="mascot-title">Movie Fact of the Day</h3>
-                        <p id="factOfDayText" class="fact-text-content">Loading Fact of the Day...</p>
+                <!-- Top Row Flex Container for Logo, Center Welcome Title, and Hamburger Menu -->
+                <div style="display: flex; width: 100%; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                    <!-- Left Group: Logo -->
+                    <div class="nav-left-group index-nav-left" style="flex: 0 0 auto;">
+                        <a href="index.html" class="tv-nav-logo-link index-logo-link">
+                            <!-- PopcornID brand logo image -->
+                            <img src="logo.png" alt="PopcornID Logo" class="tv-nav-logo index-nav-logo-img">
+                        </a>
                     </div>
-                </div>
 
-                <!-- Center Group: Header text centered in the middle -->
-                <div class="combined-fact-center-content index-center-content">
-                    <!-- Animated greeting message text element centered in the navigation bar -->
-                    <div class="nav-fun-text animated-welcome">Welcome to PopcornID - ID Movie Titles Instantly!</div>
-                </div>
+                    <!-- Center Group: Header text centered precisely in the middle -->
+                    <div class="combined-fact-center-content index-center-content" style="flex: 1; text-align: center;">
+                        <!-- Animated greeting message text element centered in the navigation bar -->
+                        <div class="nav-fun-text animated-welcome" style="margin: 0;">Welcome to PopcornID - ID Movie Titles Instantly!</div>
+                    </div>
 
-                <!-- Right Group: Hamburger Menu -->
-                <div class="nav-right-group index-nav-right">
-                    <!-- Hamburger Menu Container with Responsive Desktop Profile & Mobile Toggle -->
-                    <div class="hamburger-menu-container">
-                        <button class="hamburger-btn" onclick="toggleHamburgerMenu(event)">
-                            <span class="desktop-nav-profile">
-                                <span id="navAvatarPreview" class="nav-avatar">🎬</span>
-                                <span id="navUsername" class="nav-username-text">Beaudoin</span>
-                            </span>
-                            <span class="mobile-hamburger-icon">☰</span>
-                        </button>
-                        <div class="hamburger-menu" id="hamburgerMenu">
-                            <div class="hamburger-user-header">
-                                <div id="hamburgerAvatarPreview" class="nav-avatar">🎬</div>
-                                <span id="hamburgerUsername" class="nav-username-text">Beaudoin</span>
+                    <!-- Right Group: Hamburger Menu -->
+                    <div class="nav-right-group index-nav-right" style="flex: 0 0 auto;">
+                        <!-- Hamburger Menu Container with Responsive Desktop Profile & Mobile Toggle -->
+                        <div class="hamburger-menu-container">
+                            <button class="hamburger-btn" onclick="toggleHamburgerMenu(event)">
+                                <span class="desktop-nav-profile">
+                                    <span id="navAvatarPreview" class="nav-avatar">🎬</span>
+                                    <span id="navUsername" class="nav-username-text">Beaudoin</span>
+                                </span>
+                                <span class="mobile-hamburger-icon">☰</span>
+                            </button>
+                            <div class="hamburger-menu" id="hamburgerMenu">
+                                <div class="hamburger-user-header">
+                                    <div id="hamburgerAvatarPreview" class="nav-avatar">🎬</div>
+                                    <span id="hamburgerUsername" class="nav-username-text">Beaudoin</span>
+                                </div>
+                                <a href="index.html">Home</a>
+                                <a href="tvshows.html">TV Shows</a>
+                                <a href="profile.html">My Profile</a>
+                                <a href="account.html">Account Settings</a>
+                                <!-- Mobile & Desktop Dropdown Log Out link with event prevention -->
+                                <a href="#" class="mobile-logout-link" onclick="handleLogout(); return false;">Log Out</a>
                             </div>
-                            <a href="index.html">Home</a>
-                            <a href="tvshows.html">TV Shows</a>
-                            <a href="profile.html">My Profile</a>
-                            <a href="account.html">Account Settings</a>
-                            <!-- Mobile & Desktop Dropdown Log Out link with event prevention -->
-                            <a href="#" class="mobile-logout-link" onclick="handleLogout(); return false;">Log Out</a>
                         </div>
                     </div>
+                <!-- Closes top row flex container -->
                 </div>
 
+                <!-- Bottom Row: Long, Thin Centered Movie Fact Banner positioned directly below title -->
+                <div class="mascot-speech-bubble" style="width: 100%; max-width: 900px; text-align: center; padding: 10px 20px; background-color: rgba(15, 23, 42, 0.6); border: 1px solid #333c51; border-radius: 8px; box-sizing: border-box;">
+                    <!-- Fact label title header -->
+                    <span class="mascot-title" style="font-weight: bold; color: #3b82f6; margin-right: 8px;">🎬 Movie Fact of the Day:</span>
+                    <!-- Dynamic fact text content container -->
+                    <span id="factOfDayText" class="fact-text-content" style="display: inline; color: #cbd5e1;">Loading Fact of the Day...</span>
+                <!-- Closes bottom row long thin banner container -->
+                </div>
+
+            <!-- Closes top-fact-card container -->
             </div>
+        <!-- Closes top-fact-banner-wrapper container -->
         </div>
 
         <!-- Main 3-Column Layout Container -->
