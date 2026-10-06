@@ -5,7 +5,7 @@
  */
 
 /* ========================================== */
-/* SCRIPT DIRECTORY & TABLE OF CONTENTS       */
+/* SCRIPT DIRECTORY & TABLE OF CONTENTS        */
 /* ========================================== */
 /* 
   1. GLOBAL STATE VARIABLES
@@ -29,7 +29,7 @@
 // ==========================================
 const API_BASE_URL = window.location.origin; // Defines live production Vercel backend API base URL string dynamically
 
-let isSignUpMode = false;          // Tracks whether the auth screen is currently set to Sign Up or Sign In mode
+let isSignUpMode = false;         // Tracks whether the auth screen is currently set to Sign Up or Sign In mode
 let currentPendingUser = "";       // Stores the username string of the actively logged-in or registering user account
 let userAuthToken = "";            // Stores the active authorization session token string received from backend
 let selectedAvatarValue = "🎬";    // Stores the currently selected avatar icon emoji character or custom image data URL string
@@ -935,7 +935,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function updateFileName() {
     const input = document.getElementById("imageInput"); // Locates hidden file upload input element in DOM
     const label = document.getElementById("fileNameDisplay"); // Locates file name display text label element in DOM
-    if (input && input.files.length > 0) { // Checks if file input element contains a selected file item object
+    if (input && input.files.length > 0 && label) { // Checks if file input element contains a selected file item object
         label.textContent = "📷 " + input.files[0].name; // Updates text label string content with camera icon and uploaded filename string
     }
 }
@@ -972,7 +972,7 @@ async function uploadImage() {
     const modalBody = document.getElementById("modalBody"); // Locates modal body content container element in DOM
 
     if (!fileInput || !fileInput.files[0]) { // Validates that a valid file has been selected or dropped into input
-        showSuccessModal("Please Select Or Snap An Image First!"); // Displays warning message inside custom styled modal window
+        showSuccessModal("Please Select Or Snap An Image First!"); // Displays warning inside custom styled modal window
         return; // Exits function execution flow early
     }
 
@@ -1013,7 +1013,7 @@ async function uploadImage() {
                 : ""; // Generates image HTML tag string if poster URL property exists in response data
 
             let streamingDisplay = data.streaming; // Extracts streaming platforms availability text string from response
-            if (!streamingDisplay || streamingDisplay.toLowerCase() === "Not Currently Streaming" || streamingDisplay.toLowerCase() === "none" || streamingDisplay.trim() === "") {
+            if (!streamingDisplay || streamingDisplay.toLowerCase() === "not currently streaming" || streamingDisplay.toLowerCase() === "none" || streamingDisplay.trim() === "") {
                 streamingDisplay = "Available on Prime Video, Apple TV+, & Fandango at Home"; // Sets default streaming platform fallback text string
             }
 
@@ -1899,6 +1899,7 @@ async function saveRecommendationItem(title, type, posterUrl) {
  */
 async function addGenre() {
     const select = document.getElementById("genreSelect"); // Locates genre select dropdown element in DOM
+    if (!select) return;
     const genre = select.value; // Extracts selected genre string value
     const activeUser = currentPendingUser || localStorage.getItem("PopcornID_username") || "";
     
@@ -1917,7 +1918,7 @@ async function addGenre() {
  */
 async function addFriend() {
     const input = document.getElementById("friendSearchInput"); // Locates friend search text input element in DOM
-    if (!input.value.trim()) return; // Exits function early if input value string is empty
+    if (!input || !input.value.trim()) return; // Exits function early if input value string is empty
 
     const friendName = input.value.trim(); // Extracts and trims friend username string value safely
     const activeUser = currentPendingUser || localStorage.getItem("PopcornID_username") || "";
@@ -1937,9 +1938,14 @@ async function addFriend() {
  * Submits and logs a new personal rating entry object from the profile page form into backend Supabase ratings array.
  */
 async function submitPersonalRating() {
-    const title = document.getElementById("rateTitleInput").value.trim(); // Locates and extracts rating title input value string
-    const stars = document.getElementById("starRatingSelect").value; // Locates and extracts star selection value string
-    const review = document.getElementById("ratingReviewInput").value.trim(); // Locates and extracts review textarea value string
+    const rateTitleInput = document.getElementById("rateTitleInput");
+    const starRatingSelect = document.getElementById("starRatingSelect");
+    const ratingReviewInput = document.getElementById("ratingReviewInput");
+
+    if (!rateTitleInput) return;
+    const title = rateTitleInput.value.trim(); // Locates and extracts rating title input value string
+    const stars = starRatingSelect ? starRatingSelect.value : "★★★★★"; // Locates and extracts star selection value string
+    const review = ratingReviewInput ? ratingReviewInput.value.trim() : ""; // Locates and extracts review textarea value string
 
     if (!title) { // Checks if title input string value is empty
         showSuccessModal("Please enter a movie or TV show title to rate!"); // Displays warning inside custom modal window
@@ -1954,8 +1960,8 @@ async function submitPersonalRating() {
     ratings.unshift({ title, stars, review: review || "Great Series!" }); // Prepends new rating object to beginning of array
     await updateProfileArraysField("ratings", ratings);
 
-    document.getElementById("rateTitleInput").value = ""; // Resets rate title input value string to empty
-    document.getElementById("ratingReviewInput").value = ""; // Resets rating review input value string to empty
+    rateTitleInput.value = ""; // Resets rate title input value string to empty
+    if (ratingReviewInput) ratingReviewInput.value = ""; // Resets rating review input value string to empty
 }
 
 // ==========================================
