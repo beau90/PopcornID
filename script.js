@@ -27,7 +27,7 @@
 // ==========================================
 // 1. GLOBAL STATE VARIABLES
 // ==========================================
-const API_BASE_URL = window.location.origin; // Defines live production Vercel backend API base URL string
+const API_BASE_URL = window.location.origin; // Defines live production Vercel backend API base URL string dynamically
 
 let isSignUpMode = false;          // Tracks whether the auth screen is currently set to Sign Up or Sign In mode
 let currentPendingUser = "";       // Stores the username string of the actively logged-in or registering user account
@@ -1257,6 +1257,7 @@ async function saveRatingModal(isExplicitSave) {
             body: JSON.stringify(currentProfile)
         });
         closeRatingModal();
+        loadSavedProfileData(); // Reloads profile grids on screen
         showSuccessModal(`📊 Rating Saved to Profile Logbook!`);
     } catch (err) {
         console.error("Error saving rating to backend:", err);
@@ -1762,21 +1763,24 @@ async function deleteRating(index) {
 /**
  * Adds a new custom favorite movie or TV show title to the user's profile favorites list.
  */
-function addFavoriteTitle() {
+async function addFavoriteTitle() {
     const input = document.getElementById("favTitleInput"); // Locates favorite title text input element in DOM
-    const type = document.getElementById("favTypeSelect").value; // Locates favorite type select element value string
+    const typeElem = document.getElementById("favTypeSelect"); // Locates favorite type select element in DOM
     const fileInput = document.getElementById("favPosterFileInput"); // Locates custom poster file input element in DOM
+    
+    if (!input) return;
     const title = input.value.trim(); // Extracts and trims favorite title text string value safely
+    const type = typeElem ? typeElem.value : "Movie";
     if (!title) return; // Exits function early if title string value is empty
 
-    if (fileInput.files && fileInput.files[0]) { // Checks if custom poster file object was selected by user
+    if (fileInput && fileInput.files && fileInput.files[0]) { // Checks if custom poster file object was selected by user
         const reader = new FileReader(); // Initializes a new FileReader instance
-        reader.onload = function(e) {
-            saveFavoriteItem(title, type, e.target.result); // Saves favorite item with base64 poster data URL string after reading
+        reader.onload = async function(e) {
+            await saveFavoriteItem(title, type, e.target.result); // Saves favorite item with base64 poster data URL string after reading
         };
         reader.readAsDataURL(fileInput.files[0]); // Reads uploaded poster file as base64 data URL string
     } else {
-        saveFavoriteItem(title, type, ""); // Saves favorite item without custom poster image string if no file selected
+        await saveFavoriteItem(title, type, ""); // Saves favorite item without custom poster image string if no file selected
     }
 }
 
@@ -1802,21 +1806,24 @@ async function saveFavoriteItem(title, type, posterUrl) {
 /**
  * Adds a new custom recommendation title to the user's profile recommendations list.
  */
-function addRecommendation() {
+async function addRecommendation() {
     const input = document.getElementById("recommendationInput"); // Locates recommendation title text input element in DOM
-    const type = document.getElementById("recommendationTypeSelect").value; // Locates recommendation type select element value string
+    const typeElem = document.getElementById("recommendationTypeSelect"); // Locates recommendation type select element value string
     const fileInput = document.getElementById("recommendationPosterFileInput"); // Locates custom poster file input element in DOM
+    
+    if (!input) return;
     const title = input.value.trim(); // Extracts and trims recommendation title text string value safely
+    const type = typeElem ? typeElem.value : "Movie";
     if (!title) return; // Exits function early if title string value is empty
 
-    if (fileInput.files && fileInput.files[0]) { // Checks if custom poster file object was selected by user
+    if (fileInput && fileInput.files && fileInput.files[0]) { // Checks if custom poster file object was selected by user
         const reader = new FileReader(); // Initializes a new FileReader instance
-        reader.onload = function(e) {
-            saveRecommendationItem(title, type, e.target.result); // Saves recommendation item with base64 poster data URL string after reading
+        reader.onload = async function(e) {
+            await saveRecommendationItem(title, type, e.target.result); // Saves recommendation item with base64 poster data URL string after reading
         };
         reader.readAsDataURL(fileInput.files[0]); // Reads uploaded poster file as base64 data URL string
     } else {
-        saveRecommendationItem(title, type, ""); // Saves recommendation item without custom poster image string if no file selected
+        await saveRecommendationItem(title, type, ""); // Saves recommendation item without custom poster image string if no file selected
     }
 }
 
