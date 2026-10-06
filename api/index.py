@@ -195,7 +195,19 @@ async def register(data: dict):
         "password_hash": hash_password(password),   # Stores secure bcrypt password hash string
         "email": email,                             # Stores registered user email address string
         "mfa_code": None,                           # Initializes pending multi-factor authentication code as null
-        "profile": {"bio": "", "birthdate": "", "gender": "", "avatar": "🎬", "email": email, "phone": ""} # Sets default profile dictionary fields
+        "profile": {
+            "bio": "", 
+            "birthdate": "", 
+            "gender": "", 
+            "avatar": "🎬", 
+            "email": email, 
+            "phone": "",
+            "genres": [],
+            "favorites": [],
+            "recommendations": [],
+            "friends": [],
+            "ratings": []
+        } # Sets default profile dictionary fields including all user list arrays
     }
     save_user_to_db(username, users_db[username]) # Persists newly created user record directly into Supabase
 
@@ -363,6 +375,13 @@ async def update_profile(data: dict, username: str = Header(None)):
     gender = data.get("gender")                             # Extracts gender selection string value
     bio = data.get("bio")                                   # Extracts user profile biographical description string
     avatar = data.get("avatar")                             # Extracts avatar icon identifier or data URL string
+    
+    # Extracts user list arrays (genres, favorites, recommendations, friends, ratings) from request payload
+    genres = data.get("genres")
+    favorites = data.get("favorites")
+    recommendations = data.get("recommendations")
+    friends = data.get("friends")
+    ratings = data.get("ratings")
 
     if new_password: # Checks if password modification was requested by user
         if not current_password or not verify_password(current_password, user["password_hash"]):
@@ -396,6 +415,18 @@ async def update_profile(data: dict, username: str = Header(None)):
         user["profile"]["bio"] = bio
     if avatar:                 # Updates avatar picture string if present
         user["profile"]["avatar"] = avatar
+        
+    # Updates profile array lists in memory if provided in request payload
+    if genres is not None:
+        user["profile"]["genres"] = genres
+    if favorites is not None:
+        user["profile"]["favorites"] = favorites
+    if recommendations is not None:
+        user["profile"]["recommendations"] = recommendations
+    if friends is not None:
+        user["profile"]["friends"] = friends
+    if ratings is not None:
+        user["profile"]["ratings"] = ratings
 
     save_user_to_db(updated_username_key, user) # Persists all profile updates permanently to Supabase database
 
