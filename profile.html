@@ -171,7 +171,7 @@
                         <!-- Dropdown select box containing film and TV genre options -->
                         <select id="genreSelect" class="no-margin">
                             <!-- Default placeholder choice option -->
-                            <option value="Choose Here">Choose Here! ✅</option>
+                            <option value="Choose Here">Choose Here! ⬇️</option>
                             <!-- Option choice for Action genre -->
                             <option value="Action">Action 💥</option>
                             <!-- Option choice for Sci-Fi genre -->
@@ -358,6 +358,15 @@
         <!-- Closes app-layout profile-hub-layout container -->
         </div>
     <!-- Closes profilePage container -->
+    </div>
+
+    <!-- Global Success / Status Modal Popup Overlay Required by JavaScript -->
+    <div id="successModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h3 id="successModalTitle">PopcornID Notice</h3>
+            <p id="successModalMessage">Action completed successfully!</p>
+            <button class="btn-primary" onclick="closeSuccessModal()">OK</button>
+        </div>
     </div>
 
     <!-- Includes primary external script.js file -->
