@@ -1124,8 +1124,8 @@ function displayTvShows(shows) {
                 <p>${item.release_date || ""}</p>
             </div>
             <div onclick="event.stopPropagation()">
-                <button onclick='quickAddFavorite(${JSON.stringify(item).replace(/'/g, "&#39;")})' class="btn-primary" title="Add to Favorites">⭐ Fav</button>
-                <button onclick='quickLogRating(${JSON.stringify(item.title).replace(/'/g, "&#39;")})' class="btn-primary" title="Quick Rate">📝 Rate</button>
+                <button onclick='quickAddFavorite(${JSON.stringify(item).replace(/'/g, "&#39;")})' class="btn-primary" title="Add to Favorites">Favorite</button>
+                <button onclick='quickLogRating(${JSON.stringify(item.title).replace(/'/g, "&#39;")})' class="btn-primary" title="Quick Rate">Rate</button>
             </div>
         </div>
     `).join(""); // Maps each TV show object into an HTML card element string with favorite and rating action buttons
@@ -1169,12 +1169,15 @@ async function quickAddFavorite(show) {
                 },
                 body: JSON.stringify(currentProfile)
             });
-            showSuccessModal(`⭐ "${show.title}" Added To Your Profile Favorite TV Shows!`);
+            // Triggers your styled uniform popup window with a custom notice message
+            showSuccessModal(`"${show.title}" Has Been Successfully Added To Your Favorite TV Shows!`);
         } catch (err) {
             console.error("Error saving quick favorite:", err);
+            showSuccessModal(`Error connecting to server while saving favorite.`);
         }
     } else {
-        showSuccessModal(`"${show.title}" Is Already In Your Favorites.`);
+        // Triggers your styled uniform popup warning message for duplicates
+        showSuccessModal(`"${show.title}" Is Already In Your Profile Favorites.`);
     }
 }
 
