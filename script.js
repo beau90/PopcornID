@@ -1169,15 +1169,13 @@ async function quickAddFavorite(show) {
                 },
                 body: JSON.stringify(currentProfile)
             });
-            // Triggers your styled uniform popup window with a custom notice message
-            showSuccessModal(`"${show.title}" Has Been Successfully Added To Your Favorite TV Shows!`);
+            showSuccessModal(`"${show.title}" Added To Your Profile Favorite TV Shows!`);
         } catch (err) {
             console.error("Error saving quick favorite:", err);
             showSuccessModal(`Error connecting to server while saving favorite.`);
         }
     } else {
-        // Triggers your styled uniform popup warning message for duplicates
-        showSuccessModal(`"${show.title}" Is Already In Your Profile Favorites.`);
+        showSuccessModal(`"${show.title}" Is Already In Your Favorites!`);
     }
 }
 

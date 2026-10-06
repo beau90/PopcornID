@@ -99,7 +99,7 @@
             <div class="profile-section-card tvshows-card-margin">
                 <h3 class="tvshows-section-title">Search TV Shows</h3>
                 <div class="tvshows-search-row">
-                    <input type="text" id="tvSearchInput" placeholder="Search Here!" class="no-margin tvshows-input-flex">
+                    <input type="text" id="tvSearchInput" placeholder="Search Tv Shows Here!" class="no-margin tvshows-input-flex">
                     <button onclick="performTvSearch()" class="btn-primary btn-auto-width tvshows-zero-margin">Search Show</button>
                 </div>
             </div>
@@ -171,6 +171,15 @@
             </div>
         </div>
     </div>
+
+    <!-- CUSTOM SUCCESS MODAL POPUP WINDOW -->
+<div id="successModal" class="modal-overlay">
+    <div class="modal-content">
+        <h3 id="successModalTitle">PopcornID Notice</h3>
+        <p id="successModalMessage">Settings Updated Successfully!</p>
+        <button class="btn-primary" onclick="closeSuccessModal()">OK</button>
+    </div>
+</div>
 
     <!-- Frontend client-side logic script -->
     <script src="script.js"></script>
