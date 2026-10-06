@@ -11,8 +11,9 @@
     <!-- Defines the title displayed on the browser tab -->
     <title>PopcornID | Profile</title>
     <!-- Links the external stylesheet styles.css to apply visual formatting -->
-     <!-- Adds the custom popcorn emoji favicon to the browser tab -->
+    <!-- Adds the custom popcorn emoji favicon to the browser tab -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍿</text></svg>">
+    <!-- Links the main application CSS stylesheet -->
     <link rel="stylesheet" href="styles.css">
 <!-- Closes the head section -->
 </head>
@@ -21,6 +22,7 @@
 
     <!-- Floating Background Particles Container -->
     <div class="particle-background">
+        <!-- Renders floating particle elements for decorative cinematic effect -->
         <span class="particle popcorn">🍿</span>
         <span class="particle film-strip">🎞️</span>
         <span class="particle popcorn">🍿</span>
@@ -39,8 +41,8 @@
         <span class="particle film-strip">🎞️</span>        
     </div>
 
-    <!-- Main top-level wrapper container for the active dashboard screen view -->
-    <div id="dashboardScreen">
+    <!-- Main top-level wrapper container equipped with id="profilePage" to satisfy script initialization checks -->
+    <div id="dashboardScreen" id="profilePage">
         
         <!-- Top Banner Wrapper: Combined Navigation Bar Elements -->
         <div class="top-fact-banner-wrapper">
@@ -62,27 +64,37 @@
                 <div class="combined-fact-center-content">
                     <!-- Animated greeting message text element centered in the navigation bar -->
                     <div class="nav-fun-text animated-welcome">🍿 Your PopcornID Headquarters!</div>
+                <!-- Closes the center content container -->
                 </div>
 
                 <!-- Section 3: Top Nav Right Group (Hamburger Menu) -->
                 <div class="nav-right-group">
                     <!-- Hamburger Menu Container with Responsive Desktop Profile & Mobile Toggle -->
                     <div class="hamburger-menu-container">
+                        <!-- Interactive hamburger menu toggle button element -->
                         <button class="hamburger-btn" onclick="toggleHamburgerMenu(event)">
+                            <!-- Desktop view profile preview wrapper -->
                             <span class="desktop-nav-profile">
                                 <span id="navAvatarPreview" class="nav-avatar">🎬</span>
                                 <span id="navUsername" class="nav-username-text">Beaudoin</span>
                             </span>
+                            <!-- Mobile hamburger icon toggle symbol -->
                             <span class="mobile-hamburger-icon">☰</span>
                         </button>
+                        <!-- Dropdown navigation menu box element -->
                         <div class="hamburger-menu" id="hamburgerMenu">
+                            <!-- User header block inside dropdown menu -->
                             <div class="hamburger-user-header">
                                 <div id="hamburgerAvatarPreview" class="nav-avatar">🎬</div>
                                 <span id="hamburgerUsername" class="nav-username-text">Beaudoin</span>
                             </div>
+                            <!-- Navigation link to home page -->
                             <a href="index.html">Home</a>
+                            <!-- Navigation link to TV shows page -->
                             <a href="tvshows.html">TV Shows</a>
+                            <!-- Navigation link to profile page -->
                             <a href="profile.html">My Profile</a>                            
+                            <!-- Navigation link to account settings page -->
                             <a href="account.html">Account Settings</a>
                             <!-- Mobile-only Log Out link inside the dropdown with event prevention -->
                             <a href="#" class="mobile-logout-link" onclick="handleLogout(); return false;">Log Out</a>
@@ -122,6 +134,7 @@
                         <button class="btn-primary bio-save-btn" onclick="saveBio()">Save Bio</button>
                     <!-- Closes bio input wrapper container -->
                     </div>
+                <!-- Closes profile identity column -->
                 </div>
 
                 <!-- Section B: Friends & Following -->
@@ -129,7 +142,7 @@
                     <!-- Section title heading with group emoji -->
                     <h3 class="profile-card-title-reset">My Friends List</h3>
                     <!-- Subtitle text prompting user connections -->
-                    <p class="section-subtitle">Connect With Popcorn Fans Here</p>
+                    <p class="section-subtitle">Connect With Popcorn Fans Here!</p>
                     <!-- Flexbox row grouping friend input field and add button -->
                     <div class="input-group-row">
                         <!-- Text input box for typing a friend's username -->
@@ -141,20 +154,24 @@
                     <!-- Display container where added friend entries or placeholders are rendered -->
                     <div id="friendsListContainer" class="friends-list-box friends-box-scroll">
                         <!-- Default placeholder text when no friends exist -->
-                        No Friends Added Yet! Time to Recruit Some Popcorn Buddies! 🍿
+                        Time to Recruit Some Popcorn Buddies! 🍿
                     <!-- Closes friends list container -->
                     </div>
+                <!-- Closes profile friends column -->
                 </div>
 
                 <!-- Section C: Favorite Genres -->
                 <div class="profile-genre-column">
                     <!-- Section title heading displaying drama mask emoji -->
                     <h3 class="profile-card-title-reset">My Favorite Genres</h3>
-                    <p class="section-subtitle">Pick Your Top Film Themes!</p>
+                    <!-- Subtitle text prompting user genre choices -->
+                    <p class="section-subtitle">Pick Your Top Film Themes</p>
                     <!-- Flexbox row grouping genre selector and add button -->
                     <div class="input-group-row">
                         <!-- Dropdown select box containing film and TV genre options -->
                         <select id="genreSelect" class="no-margin">
+                            <!-- Default placeholder choice option -->
+                            <option value="Choose Here">Choose Here! ✅</option>
                             <!-- Option choice for Action genre -->
                             <option value="Action">Action 💥</option>
                             <!-- Option choice for Sci-Fi genre -->
@@ -179,10 +196,11 @@
                     <div id="genreTagsContainer" class="genre-tags-wrapper genre-tags-scroll">
                     <!-- Closes genreTagsContainer element -->
                     </div>
+                <!-- Closes profile genre column -->
                 </div>
 
-            </div>
             <!-- End of Master Top Horizontal Card -->
+            </div>
 
             <!-- BOTTOM 3-COLUMN LAYOUT: Favorite Movies -> Recommendations -> Ratings & Logbook -->
             <div class="profile-bottom-row">
@@ -334,8 +352,8 @@
                 <!-- Closes rating & log section card -->
                 </div>
 
-            </div>
             <!-- End of Bottom Row Grid -->
+            </div>
 
         <!-- Closes app-layout profile-hub-layout container -->
         </div>
