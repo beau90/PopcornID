@@ -1104,19 +1104,49 @@ function displayTvShows(shows) {
 }
 
 /**
- * Quickly saves a selected TV show object to the user's browser local storage favorites list array.
+ * Quickly saves a selected TV show object to the user's Supabase database favorites list array.
  * @param {Object} show - The TV show data object to add to favorites
  */
-function quickAddFavorite(show) {
-    const savedFavs = JSON.parse(localStorage.getItem("PopcornID_favorites") || "[]"); // Retrieves existing favorite items array from local storage cache
-    const exists = savedFavs.some(fav => fav.title === show.title); // Checks if show title is already saved in favorites list array
-    
-    if (!exists) { // Checks if show is not already present in favorites list
-        savedFavs.push({ title: show.title, type: "TV Show", poster: show.poster || "" }); // Appends new show favorite object to array
-        localStorage.setItem("PopcornID_favorites", JSON.stringify(savedFavs)); // Saves updated favorites array back to local storage cache
-        showSuccessModal(`⭐ "${show.title}" Added To Your My Profile Favorite TV Shows!`); // Displays success confirmation inside custom modal window
+async function quickAddFavorite(show) {
+    const activeUser = currentPendingUser || localStorage.getItem("PopcornID_username") || "";
+    if (!activeUser) return;
+
+    let currentProfile = {};
+    try {
+        const getRes = await fetch(`${API_BASE_URL}/api/profile`, {
+            method: "GET",
+            headers: { "username": activeUser }
+        });
+        const getData = await getRes.json();
+        if (getData.success && getData.profile) {
+            currentProfile = getData.profile;
+        }
+    } catch (e) {
+        console.error("Error fetching current profile for quick favorite", e);
+    }
+
+    let favs = currentProfile.favorites || [];
+    const exists = favs.some(fav => fav.title === show.title);
+
+    if (!exists) {
+        favs.push({ title: show.title, type: "TV Show", poster: show.poster || "" });
+        currentProfile.favorites = favs;
+
+        try {
+            await fetch(`${API_BASE_URL}/api/profile/update`, {
+                method: "POST",
+                headers: { 
+                    "Content-Type": "application/json",
+                    "username": activeUser 
+                },
+                body: JSON.stringify(currentProfile)
+            });
+            showSuccessModal(`⭐ "${show.title}" Added To Your Profile Favorite TV Shows!`);
+        } catch (err) {
+            console.error("Error saving quick favorite:", err);
+        }
     } else {
-        showSuccessModal(`"${show.title}" Is Already In Your Favorites.`); // Displays warning notice inside custom modal window
+        showSuccessModal(`"${show.title}" Is Already In Your Favorites.`);
     }
 }
 
@@ -1175,7 +1205,7 @@ function updateStarDisplay(count) {
  * Saves or discards the user rating log entry based on whether Save or Cancel button was clicked.
  * @param {boolean} isExplicitSave - True if Save button clicked, false if Cancel button clicked
  */
-function saveRatingModal(isExplicitSave) {
+async function saveRatingModal(isExplicitSave) {
     if (!isExplicitSave) { // If user clicked Cancel button, close modal without saving to profile logbook
         closeRatingModal(); // Invokes function to close modal popup window without making changes
         return; // Exits function execution flow early
@@ -1189,16 +1219,48 @@ function saveRatingModal(isExplicitSave) {
         starsString += (i < selectedStarCount) ? "★" : "☆"; // Appends filled or hollow star character symbol based on selected count
     }
     
-    const savedRatings = JSON.parse(localStorage.getItem("PopcornID_ratings") || "[]"); // Retrieves existing ratings logs array from local storage cache
-    savedRatings.unshift({ 
+    const activeUser = currentPendingUser || localStorage.getItem("PopcornID_username") || "";
+    if (!activeUser) {
+        closeRatingModal();
+        return;
+    }
+
+    let currentProfile = {};
+    try {
+        const getRes = await fetch(`${API_BASE_URL}/api/profile`, {
+            method: "GET",
+            headers: { "username": activeUser }
+        });
+        const getData = await getRes.json();
+        if (getData.success && getData.profile) {
+            currentProfile = getData.profile;
+        }
+    } catch (e) {
+        console.error("Error fetching profile for rating modal save", e);
+    }
+
+    let ratings = currentProfile.ratings || [];
+    ratings.unshift({ 
         title: currentRatingTargetTitle, 
         stars: starsString, 
         review: reviewText || "Great Series!" 
-    }); // Prepends new rating log object to beginning of array
-    localStorage.setItem("PopcornID_ratings", JSON.stringify(savedRatings)); // Saves updated ratings logs array back to local storage cache
-    
-    closeRatingModal(); // Closes rating modal popup window after successful save operation completes
-    showSuccessModal(`📊 Rating Saved to My Profile Logbook!`); // Displays success confirmation inside custom modal window
+    });
+    currentProfile.ratings = ratings;
+
+    try {
+        await fetch(`${API_BASE_URL}/api/profile/update`, {
+            method: "POST",
+            headers: { 
+                "Content-Type": "application/json",
+                "username": activeUser 
+            },
+            body: JSON.stringify(currentProfile)
+        });
+        closeRatingModal();
+        showSuccessModal(`📊 Rating Saved to Profile Logbook!`);
+    } catch (err) {
+        console.error("Error saving rating to backend:", err);
+    }
 }
 
 /**
@@ -1408,82 +1470,109 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    const savedBio = localStorage.getItem("PopcornID_bio"); // Retrieves saved biographical text string from local storage cache
-    const bioDisplay = document.getElementById("hubUserBioDisplay"); // Locates bio display text element in DOM
-    const bioInput = document.getElementById("profileBioInput"); // Locates bio text input element in DOM
-
-    if (savedBio && savedBio.trim() !== "") { // Checks if saved biographical text string is not empty
-        if (bioDisplay) {
-            bioDisplay.textContent = `"${savedBio}"`; // Updates bio display text content string
-            bioDisplay.style.display = "block"; // Displays bio container element block on screen
-        }
-        if (bioInput) bioInput.value = ""; // Clears bio input text field value string
-    }
-
-    loadSavedProfileData(); // Triggers function to load and render all saved user profile lists and logbook items
+    // Load fresh data from Supabase backend instead of relying purely on local storage
+    loadSavedProfileData();
 });
 
 /**
- * Saves user biographical text string into browser local storage cache and updates display elements.
+ * Saves user biographical text string into Supabase database and updates display elements.
  */
-function saveBio() {
+async function saveBio() {
     const bioInput = document.getElementById("profileBioInput"); // Locates bio input textarea element in DOM
     const bioDisplay = document.getElementById("hubUserBioDisplay"); // Locates bio display container element in DOM
     
     if (bioInput && bioInput.value.trim() !== "") { // Checks if bio input field contains valid non-empty text string
         const bioText = bioInput.value.trim(); // Extracts and trims biographical text string value
-        localStorage.setItem("PopcornID_bio", bioText); // Saves biographical text string inside local storage cache
-        
-        if (bioDisplay) {
-            bioDisplay.textContent = `"${bioText}"`; // Updates bio display element text content string
-            bioDisplay.style.display = "block"; // Displays bio display element block on screen
+        const activeUser = currentPendingUser || localStorage.getItem("PopcornID_username"] || "";
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/profile/update`, {
+                method: "POST",
+                headers: { 
+                    "Content-Type": "application/json",
+                    "username": activeUser 
+                },
+                body: JSON.stringify({ bio: bioText })
+            });
+            const data = await response.json();
+            if (response.ok && data.success) {
+                if (bioDisplay) {
+                    bioDisplay.textContent = `"${bioText}"`; // Updates bio display element text content string
+                    bioDisplay.style.display = "block"; // Displays bio display element block on screen
+                }
+                bioInput.value = ""; // Clears bio input text field value string to empty
+                showSuccessModal("Bio Saved Successfully!");
+            }
+        } catch (err) {
+            console.error("Error saving bio to database:", err);
         }
-        bioInput.value = ""; // Clears bio input text field value string to empty
     }
 }
 
 /**
- * Loads and renders all saved user profile lists (favorites, recommendations, genre tags, friends, and rated logbook items) from local storage.
+ * Asynchronously loads and renders all saved user profile lists from the Supabase backend JSONB profile column.
  */
-function loadSavedProfileData() {
-    const savedFavs = JSON.parse(localStorage.getItem("PopcornID_favorites") || "[]"); // Retrieves saved favorites items array from local storage cache
+async function loadSavedProfileData() {
+    const activeUser = currentPendingUser || localStorage.getItem("PopcornID_username") || "";
+    if (!activeUser) return;
+
+    let profileData = {};
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/profile`, {
+            method: "GET",
+            headers: { "username": activeUser }
+        });
+        const data = await response.json();
+        if (response.ok && data.success && data.profile) {
+            profileData = data.profile;
+        }
+    } catch (err) {
+        console.error("Error fetching profile from backend:", err);
+    }
+
+    // Extract arrays from profileData (falling back to empty arrays if not set yet)
+    const savedFavs = profileData.favorites || [];
+    const savedRecs = profileData.recommendations || [];
+    const savedGenres = profileData.genres || [];
+    const savedFriends = profileData.friends || [];
+    const savedRatings = profileData.ratings || [];
+
     const moviesGrid = document.getElementById("favoriteMoviesGrid"); // Locates favorite movies grid container element in DOM
     const tvGrid = document.getElementById("favoriteTvShowsGrid"); // Locates favorite TV shows grid container element in DOM
     
-    if (!moviesGrid || !tvGrid) return; // Exits function safely if profile grid elements are missing from page
+    if (moviesGrid && tvGrid) {
+        moviesGrid.innerHTML = ""; // Clears favorite movies grid HTML content string safely
+        tvGrid.innerHTML = ""; // Clears favorite TV shows grid HTML content string safely
 
-    moviesGrid.innerHTML = ""; // Clears favorite movies grid HTML content string safely
-    tvGrid.innerHTML = ""; // Clears favorite TV shows grid HTML content string safely
+        let hasMovies = false; // Tracks whether any movie favorites exist in list
+        let hasTv = false; // Tracks whether any TV show favorites exist in list
 
-    let hasMovies = false; // Tracks whether any movie favorites exist in list
-    let hasTv = false; // Tracks whether any TV show favorites exist in list
+        savedFavs.forEach((item, index) => { // Loops through each favorite item object in array with index integer
+            const card = document.createElement("div"); // Creates a new div element for favorite card item
+            card.className = "news-card profile-card-relative"; // Assigns card container CSS class names
+            card.innerHTML = `
+                <button onclick="deleteFavorite(${index})" class="card-delete-btn" title="Delete">✕</button>
+                ${item.poster ? `<img src="${item.poster}" alt="Poster" class="card-poster-img">` : `<div class="card-fallback-icon">${item.type === 'Movie' ? '🎬' : '📺'}</div>`}
+                <div class="card-title-text">${item.title}</div>
+            `; // Renders favorite card HTML markup string containing delete button, poster image or icon, and title text
 
-    savedFavs.forEach((item, index) => { // Loops through each favorite item object in array with index integer
-        const card = document.createElement("div"); // Creates a new div element for favorite card item
-        card.className = "news-card profile-card-relative"; // Assigns card container CSS class names
-        card.innerHTML = `
-            <button onclick="deleteFavorite(${index})" class="card-delete-btn" title="Delete">✕</button>
-            ${item.poster ? `<img src="${item.poster}" alt="Poster" class="card-poster-img">` : `<div class="card-fallback-icon">${item.type === 'Movie' ? '🎬' : '📺'}</div>`}
-            <div class="card-title-text">${item.title}</div>
-        `; // Renders favorite card HTML markup string containing delete button, poster image or icon, and title text
+            if (item.type === "Movie") {
+                hasMovies = true; // Sets movie favorites existence tracking flag to true
+                moviesGrid.appendChild(card); // Appends favorite movie card element to movies grid container
+            } else if (item.type === "TV Show") {
+                hasTv = true; // Sets TV favorites existence tracking flag to true
+                tvGrid.appendChild(card); // Appends favorite TV show card element to TV shows grid container
+            }
+        });
 
-        if (item.type === "Movie") {
-            hasMovies = true; // Sets movie favorites existence tracking flag to true
-            moviesGrid.appendChild(card); // Appends favorite movie card element to movies grid container
-        } else if (item.type === "TV Show") {
-            hasTv = true; // Sets TV favorites existence tracking flag to true
-            tvGrid.appendChild(card); // Appends favorite TV show card element to TV shows grid container
+        if (!hasMovies) { // Checks if no movie favorites were added yet
+            moviesGrid.innerHTML = `<div class="empty-list-notice">No Movies Added Yet.</div>`; // Renders empty notice message card string
         }
-    });
-
-    if (!hasMovies) { // Checks if no movie favorites were added yet
-        moviesGrid.innerHTML = `<div class="empty-list-notice">No Movies Added Yet.</div>`; // Renders empty notice message card string
-    }
-    if (!hasTv) { // Checks if no TV show favorites were added yet
-        tvGrid.innerHTML = `<div class="empty-list-notice">No TV shows Added Yet.</div>`; // Renders empty notice message card string
+        if (!hasTv) { // Checks if no TV show favorites were added yet
+            tvGrid.innerHTML = `<div class="empty-list-notice">No TV shows Added Yet.</div>`; // Renders empty notice message card string
+        }
     }
 
-    const savedRecs = JSON.parse(localStorage.getItem("PopcornID_recommendations") || "[]"); // Retrieves saved recommendations array from local storage cache
     const recMoviesGrid = document.getElementById("recommendedMoviesGrid"); // Locates recommended movies grid container element in DOM
     const recTvGrid = document.getElementById("recommendedTvShowsGrid"); // Locates recommended TV shows grid container element in DOM
 
@@ -1520,7 +1609,6 @@ function loadSavedProfileData() {
         }
     }
 
-    const savedGenres = JSON.parse(localStorage.getItem("PopcornID_genres") || "[]"); // Retrieves saved genre tags array from local storage cache
     const genreContainer = document.getElementById("genreTagsContainer"); // Locates genre tags container element in DOM
     if (genreContainer) { // Checks if genre container element exists in DOM structure
         genreContainer.innerHTML = ""; // Clears genre tags container HTML content string safely
@@ -1532,7 +1620,6 @@ function loadSavedProfileData() {
         });
     }
 
-    const savedFriends = JSON.parse(localStorage.getItem("PopcornID_friends") || "[]"); // Retrieves saved friends array from local storage cache
     const friendContainer = document.getElementById("friendsListContainer"); // Locates friends list container element in DOM
     if (friendContainer) { // Checks if friends container element exists in DOM structure
         if (savedFriends.length > 0) { // Checks if saved friends array contains items
@@ -1548,7 +1635,6 @@ function loadSavedProfileData() {
         }
     }
 
-    const savedRatings = JSON.parse(localStorage.getItem("PopcornID_ratings") || "[]"); // Retrieves saved ratings logs array from local storage cache
     const logContainer = document.getElementById("ratedLogContainer"); // Locates rated logbook container element in DOM
     if (logContainer) { // Checks if log container element exists in DOM structure
         if (savedRatings.length > 0) { // Checks if saved ratings array contains items
@@ -1571,58 +1657,106 @@ function loadSavedProfileData() {
 }
 
 /**
- * Deletes a favorite item object from local storage favorites array based on array index integer.
+ * Helper function to update profile arrays in the Supabase backend.
+ */
+async function updateProfileArraysField(fieldName, updatedArray) {
+    const activeUser = currentPendingUser || localStorage.getItem("PopcornID_username") || "";
+    if (!activeUser) return;
+
+    let currentProfile = {};
+    try {
+        const getRes = await fetch(`${API_BASE_URL}/api/profile`, {
+            method: "GET",
+            headers: { "username": activeUser }
+        });
+        const getData = await getRes.json();
+        if (getData.success && getData.profile) {
+            currentProfile = getData.profile;
+        }
+    } catch (e) {
+        console.error("Error fetching current profile for update", e);
+    }
+
+    currentProfile[fieldName] = updatedArray;
+
+    try {
+        await fetch(`${API_BASE_URL}/api/profile/update`, {
+            method: "POST",
+            headers: { 
+                "Content-Type": "application/json",
+                "username": activeUser 
+            },
+            body: JSON.stringify(currentProfile)
+        });
+        loadSavedProfileData();
+    } catch (err) {
+        console.error(`Error updating ${fieldName}:`, err);
+    }
+}
+
+/**
+ * Deletes a favorite item object from backend database favorites array based on array index integer.
  * @param {number} index - Index integer of favorite item to delete
  */
-function deleteFavorite(index) {
-    let savedFavs = JSON.parse(localStorage.getItem("PopcornID_favorites") || "[]"); // Retrieves existing favorites array
-    savedFavs.splice(index, 1); // Removes 1 item element at specified index integer using splice method
-    localStorage.setItem("PopcornID_favorites", JSON.stringify(savedFavs)); // Saves updated favorites array back to local storage cache
-    loadSavedProfileData(); // Reloads and re-renders profile data lists on screen
+async function deleteFavorite(index) {
+    const activeUser = currentPendingUser || localStorage.getItem("PopcornID_username") || "";
+    const res = await fetch(`${API_BASE_URL}/api/profile`, { headers: { "username": activeUser } });
+    const data = await res.json();
+    let favs = (data.profile && data.profile.favorites) || [];
+    favs.splice(index, 1);
+    await updateProfileArraysField("favorites", favs);
 }
 
 /**
- * Deletes a recommendation item object from local storage recommendations array based on array index integer.
+ * Deletes a recommendation item object from backend database recommendations array based on array index integer.
  * @param {number} index - Index integer of recommendation item to delete
  */
-function deleteRecommendation(index) {
-    let savedRecs = JSON.parse(localStorage.getItem("PopcornID_recommendations") || "[]"); // Retrieves existing recommendations array
-    savedRecs.splice(index, 1); // Removes 1 item element at specified index integer using splice method
-    localStorage.setItem("PopcornID_recommendations", JSON.stringify(savedRecs)); // Saves updated recommendations array back to local storage cache
-    loadSavedProfileData(); // Reloads and re-renders profile data lists on screen
+async function deleteRecommendation(index) {
+    const activeUser = currentPendingUser || localStorage.getItem("PopcornID_username") || "";
+    const res = await fetch(`${API_BASE_URL}/api/profile`, { headers: { "username": activeUser } });
+    const data = await res.json();
+    let recs = (data.profile && data.profile.recommendations) || [];
+    recs.splice(index, 1);
+    await updateProfileArraysField("recommendations", recs);
 }
 
 /**
- * Deletes a genre tag string from local storage genre tags array based on array index integer.
+ * Deletes a genre tag string from backend database genre tags array based on array index integer.
  * @param {number} index - Index integer of genre tag string to delete
  */
-function deleteGenre(index) {
-    let savedGenres = JSON.parse(localStorage.getItem("PopcornID_genres") || "[]"); // Retrieves existing genre tags array
-    savedGenres.splice(index, 1); // Removes 1 item element at specified index integer using splice method
-    localStorage.setItem("PopcornID_genres", JSON.stringify(savedGenres)); // Saves updated genre tags array back to local storage cache
-    loadSavedProfileData(); // Reloads and re-renders profile data lists on screen
+async function deleteGenre(index) {
+    const activeUser = currentPendingUser || localStorage.getItem("PopcornID_username") || "";
+    const res = await fetch(`${API_BASE_URL}/api/profile`, { headers: { "username": activeUser } });
+    const data = await res.json();
+    let genres = (data.profile && data.profile.genres) || [];
+    genres.splice(index, 1);
+    await updateProfileArraysField("genres", genres);
 }
 
 /**
- * Deletes a friend username string from local storage friends array based on array index integer.
+ * Deletes a friend username string from backend database friends array based on array index integer.
  * @param {number} index - Index integer of friend username string to delete
  */
-function deleteFriend(index) {
-    let savedFriends = JSON.parse(localStorage.getItem("PopcornID_friends") || "[]"); // Retrieves existing friends array
-    savedFriends.splice(index, 1); // Removes 1 item element at specified index integer using splice method
-    localStorage.setItem("PopcornID_friends", JSON.stringify(savedFriends)); // Saves updated friends array back to local storage cache
-    loadSavedProfileData(); // Reloads and re-renders profile data lists on screen
+async function deleteFriend(index) {
+    const activeUser = currentPendingUser || localStorage.getItem("PopcornID_username") || "";
+    const res = await fetch(`${API_BASE_URL}/api/profile`, { headers: { "username": activeUser } });
+    const data = await res.json();
+    let friends = (data.profile && data.profile.friends) || [];
+    friends.splice(index, 1);
+    await updateProfileArraysField("friends", friends);
 }
 
 /**
- * Deletes a rating log object from local storage ratings array based on array index integer.
+ * Deletes a rating log object from backend database ratings array based on array index integer.
  * @param {number} index - Index integer of rating log object to delete
  */
-function deleteRating(index) {
-    let savedRatings = JSON.parse(localStorage.getItem("PopcornID_ratings") || "[]"); // Retrieves existing ratings array
-    savedRatings.splice(index, 1); // Removes 1 item element at specified index integer using splice method
-    localStorage.setItem("PopcornID_ratings", JSON.stringify(savedRatings)); // Saves updated ratings array back to local storage cache
-    loadSavedProfileData(); // Reloads and re-renders profile data lists on screen
+async function deleteRating(index) {
+    const activeUser = currentPendingUser || localStorage.getItem("PopcornID_username") || "";
+    const res = await fetch(`${API_BASE_URL}/api/profile`, { headers: { "username": activeUser } });
+    const data = await res.json();
+    let ratings = (data.profile && data.profile.ratings) || [];
+    ratings.splice(index, 1);
+    await updateProfileArraysField("ratings", ratings);
 }
 
 /**
@@ -1647,21 +1781,22 @@ function addFavoriteTitle() {
 }
 
 /**
- * Helper function to push and save a favorite item object into local storage favorites array cache.
+ * Helper function to push and save a favorite item object into backend Supabase profile favorites array.
  * @param {string} title - Title text string of favorite item
  * @param {string} type - Media type string ("Movie" or "TV Show")
  * @param {string} posterUrl - Poster image URL or base64 string data
  */
-function saveFavoriteItem(title, type, posterUrl) {
-    const newItem = { title: title, type: type, poster: posterUrl }; // Creates new favorite item object literal structure
-    const savedFavs = JSON.parse(localStorage.getItem("PopcornID_favorites") || "[]"); // Retrieves existing favorites array from local storage cache
-    savedFavs.push(newItem); // Appends new favorite item object to array
-    localStorage.setItem("PopcornID_favorites", JSON.stringify(savedFavs)); // Saves updated favorites array back to local storage cache
+async function saveFavoriteItem(title, type, posterUrl) {
+    const activeUser = currentPendingUser || localStorage.getItem("PopcornID_username") || "";
+    const res = await fetch(`${API_BASE_URL}/api/profile`, { headers: { "username": activeUser } });
+    const data = await res.json();
+    let favs = (data.profile && data.profile.favorites) || [];
+    favs.push({ title, type, poster: posterUrl });
+    await updateProfileArraysField("favorites", favs);
 
     document.getElementById("favTitleInput").value = ""; // Resets favorite title text input value string to empty
     document.getElementById("favPosterFileInput").value = ""; // Resets custom poster file input value
     document.getElementById("favPosterFileName").textContent = "Upload Custom Poster/Scene 📁"; // Restores file upload label text string
-    loadSavedProfileData(); // Reloads and re-renders profile data lists on screen
 }
 
 /**
@@ -1686,61 +1821,67 @@ function addRecommendation() {
 }
 
 /**
- * Helper function to push and save a recommendation item object into local storage recommendations array cache.
+ * Helper function to push and save a recommendation item object into backend Supabase profile recommendations array.
  * @param {string} title - Title text string of recommendation item
  * @param {string} type - Media type string ("Movie" or "TV Show")
  * @param {string} posterUrl - Poster image URL or base64 string data
  */
-function saveRecommendationItem(title, type, posterUrl) {
-    const newRec = { title: title, type: type, poster: posterUrl }; // Creates new recommendation item object literal structure
-    const savedRecs = JSON.parse(localStorage.getItem("PopcornID_recommendations") || "[]"); // Retrieves existing recommendations array from local storage cache
-    savedRecs.push(newRec); // Appends new recommendation item object to array
-    localStorage.setItem("PopcornID_recommendations", JSON.stringify(savedRecs)); // Saves updated recommendations array back to local storage cache
+async function saveRecommendationItem(title, type, posterUrl) {
+    const activeUser = currentPendingUser || localStorage.getItem("PopcornID_username") || "";
+    const res = await fetch(`${API_BASE_URL}/api/profile`, { headers: { "username": activeUser } });
+    const data = await res.json();
+    let recs = (data.profile && data.profile.recommendations) || [];
+    recs.push({ title, type, poster: posterUrl });
+    await updateProfileArraysField("recommendations", recs);
 
     document.getElementById("recommendationInput").value = ""; // Resets recommendation title text input value string to empty
     document.getElementById("recommendationPosterFileInput").value = ""; // Resets custom poster file input value
     document.getElementById("recPosterFileName").textContent = "Upload Custom Poster/Scene 📁"; // Restores file upload label text string
-    loadSavedProfileData(); // Reloads and re-renders profile data lists on screen
 }
 
 /**
- * Adds a selected genre tag string into the user's profile genre tags array list in local storage cache.
+ * Adds a selected genre tag string into the user's profile genre tags array list in backend Supabase database.
  */
-function addGenre() {
+async function addGenre() {
     const select = document.getElementById("genreSelect"); // Locates genre select dropdown element in DOM
     const genre = select.value; // Extracts selected genre string value
-
-    const savedGenres = JSON.parse(localStorage.getItem("PopcornID_genres") || "[]"); // Retrieves existing genre tags array from local storage cache
-    if (!savedGenres.includes(genre)) { // Checks if genre string is not already present in array
-        savedGenres.push(genre); // Appends new genre string to array
-        localStorage.setItem("PopcornID_genres", JSON.stringify(savedGenres)); // Saves updated genre tags array back to local storage cache
+    const activeUser = currentPendingUser || localStorage.getItem("PopcornID_username") || "";
+    
+    const res = await fetch(`${API_BASE_URL}/api/profile`, { headers: { "username": activeUser } });
+    const data = await res.json();
+    let genres = (data.profile && data.profile.genres) || [];
+    
+    if (!genres.includes(genre)) { // Checks if genre string is not already present in array
+        genres.push(genre); // Appends new genre string to array
+        await updateProfileArraysField("genres", genres);
     }
-
-    loadSavedProfileData(); // Reloads and re-renders profile data lists on screen
 }
 
 /**
- * Adds a new friend username string into the user's profile friends list array in local storage cache.
+ * Adds a new friend username string into the user's profile friends list array in backend Supabase database.
  */
-function addFriend() {
+async function addFriend() {
     const input = document.getElementById("friendSearchInput"); // Locates friend search text input element in DOM
     if (!input.value.trim()) return; // Exits function early if input value string is empty
 
     const friendName = input.value.trim(); // Extracts and trims friend username string value safely
-    const savedFriends = JSON.parse(localStorage.getItem("PopcornID_friends") || "[]"); // Retrieves existing friends array from local storage cache
-    if (!savedFriends.includes(friendName)) { // Checks if friend username string is not already present in array
-        savedFriends.push(friendName); // Appends new friend username string to array
-        localStorage.setItem("PopcornID_friends", JSON.stringify(savedFriends)); // Saves updated friends array back to local storage cache
-    }
+    const activeUser = currentPendingUser || localStorage.getItem("PopcornID_username") || "";
 
+    const res = await fetch(`${API_BASE_URL}/api/profile`, { headers: { "username": activeUser } });
+    const data = await res.json();
+    let friends = (data.profile && data.profile.friends) || [];
+
+    if (!friends.includes(friendName)) { // Checks if friend username string is not already present in array
+        friends.push(friendName); // Appends new friend username string to array
+        await updateProfileArraysField("friends", friends);
+    }
     input.value = ""; // Resets friend search input text value string to empty
-    loadSavedProfileData(); // Reloads and re-renders profile data lists on screen
 }
 
 /**
- * Submits and logs a new personal rating entry object from the profile page form into local storage ratings array.
+ * Submits and logs a new personal rating entry object from the profile page form into backend Supabase ratings array.
  */
-function submitPersonalRating() {
+async function submitPersonalRating() {
     const title = document.getElementById("rateTitleInput").value.trim(); // Locates and extracts rating title input value string
     const stars = document.getElementById("starRatingSelect").value; // Locates and extracts star selection value string
     const review = document.getElementById("ratingReviewInput").value.trim(); // Locates and extracts review textarea value string
@@ -1750,15 +1891,16 @@ function submitPersonalRating() {
         return; // Exits execution flow early
     }
 
-    const newRating = { title, stars, review }; // Creates new rating object literal structure
-    const savedRatings = JSON.parse(localStorage.getItem("PopcornID_ratings") || "[]"); // Retrieves existing ratings array from local storage cache
-    savedRatings.unshift(newRating); // Prepends new rating object to beginning of array
-    localStorage.setItem("PopcornID_ratings", JSON.stringify(savedRatings)); // Saves updated ratings array back to local storage cache
+    const activeUser = currentPendingUser || localStorage.getItem("PopcornID_username") || "";
+    const res = await fetch(`${API_BASE_URL}/api/profile`, { headers: { "username": activeUser } });
+    const data = await res.json();
+    let ratings = (data.profile && data.profile.ratings) || [];
+
+    ratings.unshift({ title, stars, review: review || "Great Series!" }); // Prepends new rating object to beginning of array
+    await updateProfileArraysField("ratings", ratings);
 
     document.getElementById("rateTitleInput").value = ""; // Resets rate title input value string to empty
     document.getElementById("ratingReviewInput").value = ""; // Resets rating review input value string to empty
-    
-    loadSavedProfileData(); // Reloads and re-renders profile data lists on screen
 }
 
 // ==========================================
