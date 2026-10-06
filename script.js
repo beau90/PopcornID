@@ -1554,7 +1554,7 @@ async function saveBio() {
             showSuccessModal("Error connecting to server while saving bio.");
         }
     } else {
-        showSuccessModal("Please Enter A Bio Before Aaving.");
+        showSuccessModal("Please Enter A Bio Before Saving!");
     }
 }
 

@@ -2580,3 +2580,72 @@ input[type="date"] {
         max-width: 100% !important;
     }
 }
+
+/* ========================================== */
+/* 38. UNIFORM MODAL POPUP STANDARDIZATION     */
+/* ========================================== */
+
+/* Forces all modals (successModal, loadingModal, tvModal, etc.) to share identical dimensions */
+.modal-overlay,
+#successModal,
+#loadingModal,
+#tvModal,
+#ratingModal,
+#tvSearchModal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.75);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Enforces exact uniform width, padding, and layout for every modal box */
+.modal-content,
+#successModal .modal-content,
+#loadingModal .modal-content,
+#tvModal .modal-content,
+#ratingModal .modal-content,
+#tvSearchModal .modal-content {
+    background-color: #252c3d !important;
+    padding: 30px 25px 25px 25px !important;
+    border-radius: 12px !important;
+    border: 1px solid #333c51 !important;
+    max-width: 460px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    text-align: center !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6) !important;
+    word-break: break-word !important;
+}
+
+/* Forces all headers, paragraphs, and notice messages inside any modal to stay centered */
+.modal-content h3,
+.modal-content p,
+#successModalMessage,
+#modalBody {
+    width: 100% !important;
+    text-align: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    box-sizing: border-box !important;
+}
+
+/* Standardizes action buttons inside modals to match width and padding */
+.modal-content .btn-primary,
+.modal-content button {
+    width: 100% !important;
+    max-width: 250px !important;
+    margin: 15px auto 0 auto !important;
+    display: block !important;
+}
