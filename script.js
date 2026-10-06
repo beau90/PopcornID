@@ -1897,19 +1897,42 @@ async function saveRecommendationItem(title, type, posterUrl) {
 /**
  * Adds a selected genre tag string into the user's profile genre tags array list in backend Supabase database.
  */
+/**
+ * Adds a selected genre tag string into the user's profile genre tags array list in backend Supabase database.
+ */
 async function addGenre() {
     const select = document.getElementById("genreSelect"); // Locates genre select dropdown element in DOM
     if (!select) return;
+    
     const genre = select.value; // Extracts selected genre string value
+    
+    // Validate that a real genre was chosen (ignoring placeholder options)
+    if (!genre || genre === "Choose Here" || genre.includes("Choose Here")) {
+        showSuccessModal("Please select a valid genre first! 🎬");
+        return;
+    }
+
     const activeUser = currentPendingUser || localStorage.getItem("PopcornID_username") || "";
+    if (!activeUser) {
+        showSuccessModal("Session username not found. Please sign in again.");
+        return;
+    }
     
-    const res = await fetch(`${API_BASE_URL}/api/profile`, { headers: { "username": activeUser } });
-    const data = await res.json();
-    let genres = (data.profile && data.profile.genres) || [];
-    
-    if (!genres.includes(genre)) { // Checks if genre string is not already present in array
-        genres.push(genre); // Appends new genre string to array
-        await updateProfileArraysField("genres", genres);
+    try {
+        const res = await fetch(`${API_BASE_URL}/api/profile`, { headers: { "username": activeUser } });
+        const data = await res.json();
+        let genres = (data.profile && data.profile.genres) || [];
+        
+        if (!genres.includes(genre)) { // Checks if genre string is not already present in array
+            genres.push(genre); // Appends new genre string to array
+            await updateProfileArraysField("genres", genres);
+            select.value = "Choose Here"; // Reset dropdown back to placeholder after successful add
+        } else {
+            showSuccessModal(`"${genre}" is already in your favorite genres!`);
+        }
+    } catch (err) {
+        console.error("Error adding genre:", err);
+        showSuccessModal("Error connecting to server while adding genre.");
     }
 }
 
