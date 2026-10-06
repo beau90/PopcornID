@@ -297,20 +297,20 @@
     <!-- Closes dashboardScreen container -->
     </div>
 
-    <!-- CUSTOM SUCCESS MODAL POPUP WINDOW (Class-based structure matching project styling, zero inline CSS) -->
-    <div id="successModal" class="modal-overlay">
-        <!-- Modal content card wrapper container -->
-        <div class="modal-content profile-settings-card">
-            <!-- Modal Header Title Heading -->
-            <h3>✅ Success</h3>
-            <!-- Dynamic Success Message Paragraph Element -->
-            <p id="successModalMessage">Settings Updated Successfully!</p>
-            <!-- Dismissal Button Triggering closeSuccessModal JS Function -->
-            <button class="btn-primary" onclick="closeSuccessModal()">OK</button>
-        <!-- Closes modal-content card wrapper -->
-        </div>
-    <!-- Closes successModal overlay container -->
+   <!-- CUSTOM SUCCESS MODAL POPUP WINDOW -->
+<div id="successModal" class="modal-overlay">
+    <!-- Modal content card wrapper container -->
+    <div class="modal-content">
+        <!-- Modal Header Title Heading -->
+        <h3 style="color: #3b82f6; margin-bottom: 12px; font-size: 1.35rem;">PopcornID Notice</h3>
+        <!-- Dynamic Success Message Paragraph Element -->
+        <p id="successModalMessage" style="color: #cbd5e1; font-size: 1.02rem; line-height: 1.4; margin-bottom: 20px;">Settings Updated Successfully!</p>
+        <!-- Dismissal Button Triggering closeSuccessModal JS Function -->
+        <button class="btn-primary" onclick="closeSuccessModal()">OK</button>
+    <!-- Closes modal-content card wrapper -->
     </div>
+<!-- Closes successModal overlay container -->
+</div>
 
     <!-- Script tag linking external controller file script.js -->
     <script src="script.js"></script>
