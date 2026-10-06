@@ -2657,10 +2657,9 @@ input[type="date"] {
 }
 
 /* Standardizes action buttons inside modals to match width and padding */
-.modal-content .btn-primary,
-.modal-content button {
+.modal-content .btn-primary {
     width: 100% !important;
     max-width: 250px !important;
-    margin: 5px auto 0 auto !important;
+    margin: 15px auto 0 auto !important;
     display: block !important;
 }
