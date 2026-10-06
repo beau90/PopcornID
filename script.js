@@ -1554,7 +1554,7 @@ async function saveBio() {
             showSuccessModal("Error connecting to server while saving bio.");
         }
     } else {
-        showSuccessModal("Please enter a bio before saving.");
+        showSuccessModal("Please Enter A Bio Before Aaving.");
     }
 }
 
@@ -1819,7 +1819,11 @@ async function addFavoriteTitle() {
     if (!input) return;
     const title = input.value.trim(); // Extracts and trims favorite title text string value safely
     const type = typeElem ? typeElem.value : "Movie";
-    if (!title) return; // Exits function early if title string value is empty
+    
+    if (!title) { // Checks if title input string value is empty
+        showSuccessModal("Please Enter A Movie Or TV Show Title To Save As Favorite!"); // Displays warning inside custom modal window
+        return; // Exits execution flow early
+    }
 
     if (fileInput && fileInput.files && fileInput.files[0]) { // Checks if custom poster file object was selected by user
         const reader = new FileReader(); // Initializes a new FileReader instance
@@ -1848,7 +1852,7 @@ async function saveFavoriteItem(title, type, posterUrl) {
 
     document.getElementById("favTitleInput").value = ""; // Resets favorite title text input value string to empty
     document.getElementById("favPosterFileInput").value = ""; // Resets custom poster file input value
-    document.getElementById("favPosterFileName").textContent = "Upload Custom Poster/Scene 📁"; // Restores file upload label text string
+    document.getElementById("favPosterFileName").textContent = "Upload Custom Poster/Scene"; // Restores file upload label text string
 }
 
 /**
@@ -1862,7 +1866,11 @@ async function addRecommendation() {
     if (!input) return;
     const title = input.value.trim(); // Extracts and trims recommendation title text string value safely
     const type = typeElem ? typeElem.value : "Movie";
-    if (!title) return; // Exits function early if title string value is empty
+    
+    if (!title) { // Checks if title input string value is empty
+        showSuccessModal("Please Enter A Movie Or TV Show Title To Recommend!"); // Displays warning inside custom modal window
+        return; // Exits execution flow early
+    }
 
     if (fileInput && fileInput.files && fileInput.files[0]) { // Checks if custom poster file object was selected by user
         const reader = new FileReader(); // Initializes a new FileReader instance
@@ -1892,6 +1900,8 @@ async function saveRecommendationItem(title, type, posterUrl) {
     document.getElementById("recommendationInput").value = ""; // Resets recommendation title text input value string to empty
     document.getElementById("recommendationPosterFileInput").value = ""; // Resets custom poster file input value
     document.getElementById("recPosterFileName").textContent = "Upload Custom Poster/Scene 📁"; // Restores file upload label text string
+    
+    showSuccessModal(`👍 Added "${title}" To Your Recommendations!`); // Displays success confirmation modal
 }
 
 /**
@@ -1908,7 +1918,7 @@ async function addGenre() {
     
     // Validate that a real genre was chosen (ignoring placeholder options)
     if (!genre || genre === "Choose Here" || genre.includes("Choose Here")) {
-        showSuccessModal("Please select a valid genre first! 🎬");
+        showSuccessModal("Please Select a Valid Genre First!");
         return;
     }
 
@@ -1941,9 +1951,14 @@ async function addGenre() {
  */
 async function addFriend() {
     const input = document.getElementById("friendSearchInput"); // Locates friend search text input element in DOM
-    if (!input || !input.value.trim()) return; // Exits function early if input value string is empty
+    if (!input) return;
 
     const friendName = input.value.trim(); // Extracts and trims friend username string value safely
+    if (!friendName) { // Checks if friend input string value is empty
+        showSuccessModal("Please Enter A Friend's Username To Add!"); // Displays warning inside custom modal window
+        return; // Exits function execution early
+    }
+
     const activeUser = currentPendingUser || localStorage.getItem("PopcornID_username") || "";
 
     const res = await fetch(`${API_BASE_URL}/api/profile`, { headers: { "username": activeUser } });
@@ -1953,6 +1968,9 @@ async function addFriend() {
     if (!friends.includes(friendName)) { // Checks if friend username string is not already present in array
         friends.push(friendName); // Appends new friend username string to array
         await updateProfileArraysField("friends", friends);
+        showSuccessModal(`Added "${friendName}" To Your Friends List!`); // Success notification modal
+    } else {
+        showSuccessModal(`"${friendName}" Is Already In Your Friends List!`); // Duplicate notification modal
     }
     input.value = ""; // Resets friend search input text value string to empty
 }
@@ -1971,7 +1989,7 @@ async function submitPersonalRating() {
     const review = ratingReviewInput ? ratingReviewInput.value.trim() : ""; // Locates and extracts review textarea value string
 
     if (!title) { // Checks if title input string value is empty
-        showSuccessModal("Please enter a movie or TV show title to rate!"); // Displays warning inside custom modal window
+        showSuccessModal("Please Enter A Movie Or TV Show Title To Rate!"); // Displays warning inside custom modal window
         return; // Exits execution flow early
     }
 

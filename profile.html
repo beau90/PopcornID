@@ -228,7 +228,7 @@
                         <!-- Row layout providing custom button click trigger for file upload without browser text artifact -->
                         <div class="file-upload-row profile-file-row-cursor" onclick="document.getElementById('favPosterFileInput').click();">
                             <!-- Span text displaying upload prompt or selected image filename cleanly -->
-                            <span class="file-upload-label" id="favPosterFileName">Click Here To Upload Custom Poster!</span>
+                            <span class="file-upload-label" id="favPosterFileName">Upload Custom Poster/Scene Here!</span>
                             <!-- Hidden input element accepting image file uploads without showing browser labels -->
                             <input type="file" id="favPosterFileInput" accept="image/*" class="profile-hidden-input" onchange="document.getElementById('favPosterFileName').textContent = this.files[0] ? this.files[0].name : 'Upload Custom Poster/Scene Here!';">
                         <!-- Closes file upload row -->
@@ -281,7 +281,7 @@
                         <!-- Custom upload row handling poster selection cleanly without browser artifacts -->
                         <div class="file-upload-row profile-file-row-cursor" onclick="document.getElementById('recommendationPosterFileInput').click();">
                             <!-- Label displaying poster instructions or selected filename -->
-                            <span class="file-upload-label" id="recPosterFileName">Click Here To Upload Custom Poster/Scene!</span>
+                            <span class="file-upload-label" id="recPosterFileName">Upload Custom Poster/Scene Here!</span>
                             <!-- Hidden file chooser for custom recommendation poster images -->
                             <input type="file" id="recommendationPosterFileInput" accept="image/*" class="profile-hidden-input" onchange="document.getElementById('recPosterFileName').textContent = this.files[0] ? this.files[0].name : 'Upload Custom Poster/Scene Here!';">
                         <!-- Closes file upload row -->
