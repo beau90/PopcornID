@@ -5,7 +5,7 @@
  */
 
 /* ========================================== */
-/* SCRIPT DIRECTORY & TABLE OF CONTENTS        */
+/* SCRIPT DIRECTORY & TABLE OF CONTENTS       */
 /* ========================================== */
 /* 
   1. GLOBAL STATE VARIABLES
@@ -450,12 +450,17 @@ async function fetchAndPopulateProfile() {
             const birthdateInput = document.getElementById("profileBirthdate"); // Locates birthdate picker input element
             const genderSelect = document.getElementById("profileGender"); // Locates gender select dropdown element
             const bioInput = document.getElementById("profileBio"); // Locates user bio input textarea element
+            const bioDisplay = document.getElementById("hubUserBioDisplay"); // Locates bio display container element on profile page
 
             if (data.profile.email && emailDisp) emailDisp.textContent = data.profile.email; 
             if (data.profile.phone && phoneInput) phoneInput.value = data.profile.phone; 
             if (data.profile.birthdate && birthdateInput) birthdateInput.value = data.profile.birthdate; 
             if (data.profile.gender && genderSelect) genderSelect.value = data.profile.gender; 
-            if (data.profile.bio && bioInput) bioInput.value = data.profile.bio; 
+            if (data.profile.bio && bioInput) bioInput.value = data.profile.bio;
+            if (data.profile.bio && bioDisplay) {
+                bioDisplay.textContent = `"${data.profile.bio}"`;
+                bioDisplay.style.display = "block";
+            }
         }
     } catch (err) {
         console.log("Error Loading Profile Data"); // Logs exception error string to console if profile fetch operation fails
@@ -677,6 +682,7 @@ function previewProfileAvatar() {
 
 /**
  * Saves updated user profile details, credentials, and settings by transmitting a POST payload to the backend API.
+ * Fetches existing profile first to ensure all user lists (favorites, ratings, etc.) persist without being overwritten.
  */
 async function saveProfile() {
     const newUsernameInput = document.getElementById("newUsernameInput"); // Locates new username input field element in DOM
@@ -700,8 +706,9 @@ async function saveProfile() {
     const genderElem = document.getElementById("profileGender"); // Locates gender select dropdown element in DOM
     const gender = genderElem ? genderElem.value : ""; // Extracts selected gender value string safely
     
-    const bioElem = document.getElementById("profileBio"); // Locates biographical text area element in DOM
-    const bio = bioElem ? bioElem.value : ""; // Extracts bio text string value safely
+    // Check both potential bio input element IDs across different pages
+    const bioElem = document.getElementById("profileBio") || document.getElementById("profileBioInput");
+    const bio = bioElem ? bioElem.value.trim() : ""; // Extracts bio text string value safely
 
     if (newPassword && !currentPassword) { // Validates that current password string is entered if user is attempting to change password
         showSuccessModal("Please Enter Current Password To Change It."); // Displays warning notice inside custom styled modal window
@@ -711,6 +718,17 @@ async function saveProfile() {
     const activeUser = currentPendingUser || localStorage.getItem("PopcornID_username") || ""; // Determines active username string
 
     try {
+        // Fetch existing profile data first so we preserve existing array lists (favorites, ratings, genres, etc.)
+        let existingProfile = {};
+        const getRes = await fetch(`${API_BASE_URL}/api/profile`, {
+            method: "GET",
+            headers: { "username": activeUser }
+        });
+        const getData = await getRes.json();
+        if (getData.success && getData.profile) {
+            existingProfile = getData.profile;
+        }
+
         const response = await fetch(`${API_BASE_URL}/api/profile/update`, {
             method: "POST",
             headers: { 
@@ -725,8 +743,13 @@ async function saveProfile() {
                 password: newPassword,
                 birthdate: birthdate,
                 gender: gender,
-                bio: bio,
-                avatar: selectedAvatarValue
+                bio: bio !== "" ? bio : (existingProfile.bio || ""),
+                avatar: selectedAvatarValue,
+                favorites: existingProfile.favorites || [],
+                recommendations: existingProfile.recommendations || [],
+                genres: existingProfile.genres || [],
+                friends: existingProfile.friends || [],
+                ratings: existingProfile.ratings || []
             })
         }); // Sends profile update POST request payload to live backend API endpoint URL with active username header
 
@@ -758,6 +781,11 @@ async function saveProfile() {
                 const emailDisp = document.getElementById("currentEmailDisplay"); // Locates current email text display box element in DOM
                 if (data.profile && data.profile.email && emailDisp) {
                     emailDisp.textContent = data.profile.email; // Updates email text display string content
+                }
+                const bioDisplay = document.getElementById("hubUserBioDisplay"); // Locates bio display box element
+                if (bioDisplay && bio) {
+                    bioDisplay.textContent = `"${bio}"`;
+                    bioDisplay.style.display = "block";
                 }
                 if (data.profile && data.profile.avatar) {
                     selectedAvatarValue = data.profile.avatar; // Updates avatar memory variable state string value
@@ -1476,7 +1504,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /**
- * Saves user biographical text string into Supabase database and updates display elements.
+ * Saves user biographical text string into Supabase database along with all existing profile fields so data persists on refresh.
  */
 async function saveBio() {
     const bioInput = document.getElementById("profileBioInput"); // Locates bio input textarea element in DOM
@@ -1487,13 +1515,28 @@ async function saveBio() {
         const activeUser = currentPendingUser || localStorage.getItem("PopcornID_username") || "";
 
         try {
+            // 1. Fetch current profile data first to preserve existing favorites, ratings, genres, etc.
+            let currentProfile = {};
+            const getRes = await fetch(`${API_BASE_URL}/api/profile`, {
+                method: "GET",
+                headers: { "username": activeUser }
+            });
+            const getData = await getRes.json();
+            if (getData.success && getData.profile) {
+                currentProfile = getData.profile;
+            }
+
+            // 2. Update the bio property while keeping everything else intact
+            currentProfile.bio = bioText;
+
+            // 3. Send full profile payload back to backend
             const response = await fetch(`${API_BASE_URL}/api/profile/update`, {
                 method: "POST",
                 headers: { 
                     "Content-Type": "application/json",
                     "username": activeUser 
                 },
-                body: JSON.stringify({ bio: bioText })
+                body: JSON.stringify(currentProfile)
             });
             const data = await response.json();
             if (response.ok && data.success) {
@@ -1503,10 +1546,15 @@ async function saveBio() {
                 }
                 bioInput.value = ""; // Clears bio input text field value string to empty
                 showSuccessModal("Bio Saved Successfully!");
+            } else {
+                showSuccessModal(data.detail || "Failed to save bio.");
             }
         } catch (err) {
             console.error("Error saving bio to database:", err);
+            showSuccessModal("Error connecting to server while saving bio.");
         }
+    } else {
+        showSuccessModal("Please enter a bio before saving.");
     }
 }
 
