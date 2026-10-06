@@ -2629,11 +2629,26 @@ input[type="date"] {
     word-break: break-word !important;
 }
 
-/* Forces all headers, paragraphs, and notice messages inside any modal to stay centered */
+/* Forces all headers, paragraphs, and notice messages inside any modal to stay centered with logbook rating styling */
 .modal-content h3,
+#successModalTitle {
+    color: #3b82f6 !important;
+    font-size: 1.35rem !important;
+    margin-bottom: 12px !important;
+    width: 100% !important;
+    text-align: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    box-sizing: border-box !important;
+}
+
 .modal-content p,
 #successModalMessage,
 #modalBody {
+    color: #cbd5e1 !important;
+    font-size: 1.02rem !important;
+    line-height: 1.4 !important;
+    margin-bottom: 20px !important;
     width: 100% !important;
     text-align: center !important;
     margin-left: auto !important;
@@ -2646,6 +2661,6 @@ input[type="date"] {
 .modal-content button {
     width: 100% !important;
     max-width: 250px !important;
-    margin: 15px auto 0 auto !important;
+    margin: 5px auto 0 auto !important;
     display: block !important;
 }
