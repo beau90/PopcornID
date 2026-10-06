@@ -1483,7 +1483,7 @@ async function saveBio() {
     
     if (bioInput && bioInput.value.trim() !== "") { // Checks if bio input field contains valid non-empty text string
         const bioText = bioInput.value.trim(); // Extracts and trims biographical text string value
-        const activeUser = currentPendingUser || localStorage.getItem("PopcornID_username"] || "";
+        const activeUser = currentPendingUser || localStorage.getItem("PopcornID_username") || "";
 
         try {
             const response = await fetch(`${API_BASE_URL}/api/profile/update`, {
